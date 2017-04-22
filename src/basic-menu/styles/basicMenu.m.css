@@ -1,0 +1,16 @@
+ul {
+	outline: none;
+}
+
+.item {
+	color: #34495e;
+	cursor: pointer;
+	display: block;
+	padding: 5px 10px;
+	text-decoration: underline;
+}
+
+.item:focus {
+	box-shadow: 0 0 4px 1px #86BBD8;
+	outline: none;
+}
