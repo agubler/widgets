@@ -82,7 +82,7 @@ export class Item extends FocusSchedulerMixin(ThemeableMixin(WidgetBase))<any> {
 			break;
 			case Keys.Left:
 			case Keys.Escape:
-				if (this.properties.action) {
+				if (this.properties.action && (!this.hasSubMenu() || this.hasOpenSubMenu())) {
 					event.preventDefault();
 					event.stopPropagation();
 					this.properties.retrieveFocus();
@@ -130,6 +130,14 @@ export class Item extends FocusSchedulerMixin(ThemeableMixin(WidgetBase))<any> {
 
 		return result;
 	}
+
+	private hasSubMenu() {
+		return this.children && this.children[0];
+	}
+
+	private hasOpenSubMenu() {
+		return this.hasSubMenu() && (<any> this.children[0]).properties.open;
+	}
 }
 
 interface FocusManagerMixin {
@@ -148,6 +156,8 @@ function FocusManagerMixin<T extends Constructor<WidgetBase<any>>>(Base: T): T &
 
 		@afterRender()
 		protected decorateFocus(result: DNode) {
+
+			/*decorate(result, () => {})*/
 			if (!(typeof result === 'string') && result !== null) {
 				const { _scheduleFocus, onFocus, retrieveFocus, properties: { activeItem, autoFocus } } = this;
 				result.children.forEach((node: DNode, i) => {
