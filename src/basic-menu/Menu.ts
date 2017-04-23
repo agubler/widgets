@@ -75,10 +75,10 @@ export class Item extends FocusSchedulerMixin(ThemeableMixin(WidgetBase))<any> {
 			break;
 			case Keys.Right:
 				if (this.properties.action) {
-					event.preventDefault();
-					event.stopPropagation();
 					this.properties.action(true);
 				}
+				event.preventDefault();
+				event.stopPropagation();
 			break;
 			case Keys.Left:
 			case Keys.Escape:

@@ -11,6 +11,8 @@ let menuOneActiveItem = 0;
 let menuTwoActiveItem = 0;
 let subMenuActiveItem = 0;
 let subMenu2ActiveItem = 0;
+let subMenu3ActiveItem = 0;
+let subMenu4ActiveItem = 0;
 
 function onMenuOneItemChange(value: number) {
 	menuOneActiveItem = value;
@@ -48,6 +50,32 @@ function toggleSubMenu2(state?: boolean) {
 	projector.invalidate();
 }
 
+function onSubMenu3ItemChange(value: number) {
+	subMenu3ActiveItem = value;
+	projector.invalidate();
+}
+
+let subMenu3OpenState = false;
+
+function toggleSubMenu3(state?: boolean) {
+	subMenu3OpenState = state !== undefined ? state : !subMenu3OpenState;
+	subMenu3ActiveItem = 0;
+	projector.invalidate();
+}
+
+function onSubMenu4ItemChange(value: number) {
+	subMenu4ActiveItem = value;
+	projector.invalidate();
+}
+
+let subMenu4OpenState = false;
+
+function toggleSubMenu4(state?: boolean) {
+	subMenu4OpenState = state !== undefined ? state : !subMenu4OpenState;
+	subMenu4ActiveItem = 0;
+	projector.invalidate();
+}
+
 export class App extends AppBase<WidgetProperties> {
 
 	render() {
@@ -61,7 +89,7 @@ export class App extends AppBase<WidgetProperties> {
 			w(Container, { key: 'container-2', activeItem: menuTwoActiveItem, onFocus: onMenuTwoItemChange }, [
 				w(Item, { key: 'container-2-item-1', title: 'item5' } ),
 				w(Item, { key: 'container-2-item-2', title: 'item6' } ),
-				v('div', [ w(Item, { key: 'container-2-item-3', title: 'item7' } ) ] ),
+				w(Item, { key: 'container-2-item-3', title: 'item7' } ),
 				w(Item, { key: 'container-2-item-4', title: 'item8' } ),
 				w(Item, { key: 'container-2-item-5', title: 'sub menu', action: toggleSubMenu }, [
 					w(Container, {
@@ -79,8 +107,30 @@ export class App extends AppBase<WidgetProperties> {
 								onFocus: onSubMenu2ItemChange
 							}, [
 								w(Item, { key: 'container-4-item-1', title: 'sub menu item 1' } ),
-								w(Item, { key: 'container-4-item-2', title: 'sub menu item 2' }),
-								w(Item, { key: 'container-4-item-3', title: 'sub menu item 3' } )
+								w(Item, { key: 'container-4-item-2', title: 'sub menu item 2' } ),
+								w(Item, { key: 'container-4-item-3', title: 'sub menu sub menu', action: toggleSubMenu3 }, [
+									w(Container, {
+										key: 'container-5',
+										open: subMenu3OpenState,
+										activeItem: subMenu3ActiveItem,
+										onFocus: onSubMenu3ItemChange
+									}, [
+										w(Item, { key: 'container-5-item-1', title: 'sub menu item 1' } ),
+										w(Item, { key: 'container-5-item-2', title: 'sub menu sub menu', action: toggleSubMenu4 }, [
+											w(Container, {
+												key: 'container-6',
+												open: subMenu4OpenState,
+												activeItem: subMenu4ActiveItem,
+												onFocus: onSubMenu4ItemChange
+											}, [
+												w(Item, { key: 'container-6-item-1', title: 'sub menu item 1' } ),
+												w(Item, { key: 'container-6-item-2', title: 'sub menu item 2' } ),
+												w(Item, { key: 'container-6-item-3', title: 'sub menu item 3' } )
+											])
+										]),
+										w(Item, { key: 'container-6-item-3', title: 'sub menu item 3' } )
+									])
+								])
 							])
 						]),
 						w(Item, { key: 'container-3-item-3', title: 'sub menu item 3' } )
