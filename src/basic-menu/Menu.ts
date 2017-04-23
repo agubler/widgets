@@ -156,8 +156,6 @@ function FocusManagerMixin<T extends Constructor<WidgetBase<any>>>(Base: T): T &
 
 		@afterRender()
 		protected decorateFocus(result: DNode) {
-
-			/*decorate(result, () => {})*/
 			if (!(typeof result === 'string') && result !== null) {
 				const { _scheduleFocus, onFocus, retrieveFocus, properties: { activeItem, autoFocus } } = this;
 				result.children.forEach((node: DNode, i) => {
