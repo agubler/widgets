@@ -125,6 +125,10 @@ export class Item extends FocusSchedulerMixin(ThemeableMixin(WidgetBase))<any> {
 				(<any> result.children[1]).properties.autoFocus = true;
 				(<any> result.children[1]).properties.role = 'menu';
 				(<any> result.children[0]).properties['aria-controls'] = (<any> result.children[1]).properties.key;
+				if (this.hasOpenSubMenu()) {
+					(<any> result.children[0]).properties['aria-expanded'] = 'true';
+				}
+				(<any> result.children[0]).properties['aria-haspopup'] = 'true';
 			}
 		}
 
