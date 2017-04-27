@@ -151,10 +151,6 @@ class Wrapper extends WidgetBase<WrapperProperties> {
 			if (pathIndex === (openPath.length - 1)) {
 				result = true;
 				openPath.pop();
-				console.log('openPath', openPath, 'container', container.properties.key, 'parent', this.properties.parent);
-
-				openPath = openPath.slice(0, openPath.indexOf(this.properties.parent) + 1);
-
 				this.properties.onFocus(this.properties.key, openPath, container.properties.key);
 				this.properties.setScheduleFocus(scheduleFocus);
 			}
@@ -171,7 +167,6 @@ class Wrapper extends WidgetBase<WrapperProperties> {
 			if (pathIndex === -1) {
 				openPath = openPath.slice(0, openPath.indexOf(this.properties.parent) + 1);
 				openPath.push(containerKey);
-				console.log('openPath', openPath, 'container', container.properties.key, 'parent', this.properties.parent);
 				this.properties.onFocus(this.properties.key, openPath, container.properties.key);
 				this.properties.setScheduleFocus(true);
 			}
@@ -221,19 +216,11 @@ let updatedFocusCount = 0;
 @theme(css)
 export class Item extends ThemeableMixin(WidgetBase)<any> {
 
-	private _preventFocus = false;
-	private _preventClick = false;
-
 	private onClick(event: MouseEvent) {
+		console.log('click');
 		event.stopPropagation();
-		if (!this._preventClick) {
-			this.performAction();
-		}
-		else {
-			event.stopPropagation();
-			this._preventClick = false;
-		}
-
+		event.preventDefault();
+		this.performAction();
 	}
 
 	private performAction() {
@@ -243,6 +230,10 @@ export class Item extends ThemeableMixin(WidgetBase)<any> {
 			subMenuAction();
 		}
 		else {
+			this.properties.onFocus(
+				this.properties.key,
+				this.properties.openPath,
+				this.properties.parent);
 			if (action) {
 				action();
 			}
@@ -250,7 +241,6 @@ export class Item extends ThemeableMixin(WidgetBase)<any> {
 	}
 
 	private onKeyDown(event: KeyboardEvent) {
-		console.log('keyboard');
 		switch (event.which) {
 			case Keys.Space:
 				event.preventDefault();
@@ -262,19 +252,13 @@ export class Item extends ThemeableMixin(WidgetBase)<any> {
 					event.preventDefault();
 					event.stopPropagation();
 					this.properties.expandMenu();
-					this._preventFocus = true;
 				}
-			break;
-			case Keys.Down:
-			case Keys.Up:
-				this._preventFocus = true;
 			break;
 			case Keys.Left:
 			case Keys.Escape:
 				if (this.properties.collapseMenu) {
 					const result = this.properties.collapseMenu(true);
 					if (result) {
-						this._preventFocus = true;
 						event.preventDefault();
 						event.stopPropagation();
 					}
@@ -309,22 +293,6 @@ export class Item extends ThemeableMixin(WidgetBase)<any> {
 		return `item-label-${this.properties.key}`;
 	}
 
-	private onFocus() {
-		console.log('focus');
-		if (!this._preventFocus) {
-			console.log('doing focus');
-			this.properties.onFocus(
-				this.properties.key,
-				this.properties.openPath,
-				this.properties.parent);
-			this.performAction();
-			this._preventClick = true;
-		}
-		else {
-			this._preventFocus = false;
-		}
-	}
-
 	protected render(): DNode {
 		return v('li', {
 			id: this.properties.key,
@@ -336,7 +304,6 @@ export class Item extends ThemeableMixin(WidgetBase)<any> {
 		}, [
 			v('div', {
 				tabIndex: this.properties.selectedKey === this.properties.key ? 0 : -1,
-				onfocus: this.onFocus,
 				classes: this.classes(css.item),
 				key: `item-label-${this.properties.key}`,
 				role: 'menuitem'
