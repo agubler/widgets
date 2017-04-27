@@ -7,133 +7,65 @@ import { Container, Item } from '../Menu';
 
 const AppBase = StatefulMixin(WidgetBase);
 
-let menuOneActiveItem = 0;
-let menuTwoActiveItem = 0;
-let subMenuActiveItem = 0;
-let subMenu2ActiveItem = 0;
-let subMenu3ActiveItem = 0;
-let subMenu4ActiveItem = 0;
+let selectedKey: string | undefined;
+let openPath: string[]; // [ 'container-1', 'container-2', 'container-3' ];
 
-function onMenuOneItemChange(value: number) {
-	menuOneActiveItem = value;
+function onFocus(selected: string, path: string[]) {
+	/*console.log(selected, path);*/
+	selectedKey = selected;
+	if (path) {
+		openPath = path;
+	}
 	projector.invalidate();
 }
 
-function onMenuTwoItemChange(value: number) {
-	menuTwoActiveItem = value;
-	projector.invalidate();
-}
-
-function onSubMenuItemChange(value: number) {
-	subMenuActiveItem = value;
-	projector.invalidate();
-}
-
-let subMenuOpenState = false;
-
-function toggleSubMenu(state?: boolean) {
-	subMenuOpenState = state !== undefined ? state : !subMenuOpenState;
-	subMenuActiveItem = 0;
-	projector.invalidate();
-}
-
-function onSubMenu2ItemChange(value: number) {
-	subMenu2ActiveItem = value;
-	projector.invalidate();
-}
-
-let subMenu2OpenState = false;
-
-function toggleSubMenu2(state?: boolean) {
-	subMenu2OpenState = state !== undefined ? state : !subMenu2OpenState;
-	subMenu2ActiveItem = 0;
-	projector.invalidate();
-}
-
-function onSubMenu3ItemChange(value: number) {
-	subMenu3ActiveItem = value;
-	projector.invalidate();
-}
-
-let subMenu3OpenState = false;
-
-function toggleSubMenu3(state?: boolean) {
-	subMenu3OpenState = state !== undefined ? state : !subMenu3OpenState;
-	subMenu3ActiveItem = 0;
-	projector.invalidate();
-}
-
-function onSubMenu4ItemChange(value: number) {
-	subMenu4ActiveItem = value;
-	projector.invalidate();
-}
-
-let subMenu4OpenState = false;
-
-function toggleSubMenu4(state?: boolean) {
-	subMenu4OpenState = state !== undefined ? state : !subMenu4OpenState;
-	subMenu4ActiveItem = 0;
-	projector.invalidate();
+function itemAction(key: string) {
+	console.log('an action occurred');
 }
 
 export class App extends AppBase<WidgetProperties> {
 
 	render() {
 		return v('div', [
-			w(Container, { key: 'container-1', activeItem: menuOneActiveItem, onFocus: onMenuOneItemChange }, [
-				w(Item, { key: 'container-1-item-1', title: 'item1' } ),
+			w(Container, { key: 'container-1', openPath, selectedKey, onFocus }, [
+				w(Item, { key: 'container-1-item-1', title: 'item1', action: itemAction } ),
 				w(Item, { key: 'container-1-item-2', title: 'item2' } ),
 				w(Item, { key: 'container-1-item-3', title: 'item3' } ),
-				w(Item, { key: 'container-1-item-4', title: 'item4' } )
-			]),
-			w(Container, { key: 'container-2', activeItem: menuTwoActiveItem, onFocus: onMenuTwoItemChange }, [
-				w(Item, { key: 'container-2-item-1', title: 'item5' } ),
-				w(Item, { key: 'container-2-item-2', title: 'item6' } ),
-				w(Item, { key: 'container-2-item-3', title: 'item7' } ),
-				w(Item, { key: 'container-2-item-4', title: 'item8' } ),
-				w(Item, { key: 'container-2-item-5', title: 'sub menu', action: toggleSubMenu }, [
+				w(Item, { key: 'container-1-item-4', title: 'sub menu 1' }, [
 					w(Container, {
-						key: 'container-3',
-						open: subMenuOpenState,
-						activeItem: subMenuActiveItem,
-						onFocus: onSubMenuItemChange
+						key: 'container-5'
 					}, [
-						w(Item, { key: 'container-3-item-1', title: 'sub menu item 1' } ),
-						w(Item, { key: 'container-3-item-2', title: 'sub menu sub menu', action: toggleSubMenu2 }, [
+						w(Item, { key: 'container-5-item-1', title: 'item 1' } ),
+						w(Item, { key: 'container-5-item-2', title: 'item 2' } ),
+						w(Item, { key: 'container-5-item-3', title: 'item 3' } )
+					])
+				]),
+				w(Item, { key: 'container-1-item-5', title: 'item4' } ),
+				w(Item, { key: 'container-1-item-6', title: 'sub menu 2' }, [
+					w(Container, {
+						key: 'container-2'
+					}, [
+						w(Item, { key: 'container-2-item-1', title: 'item 1' } ),
+						w(Item, { key: 'container-2-item-2', title: 'item 2' } ),
+						w(Item, { key: 'container-2-item-3', title: 'item 3' } ),
+						w(Item, { key: 'container-2-item-4', title: 'sub menu' }, [
 							w(Container, {
-								key: 'container-4',
-								open: subMenu2OpenState,
-								activeItem: subMenu2ActiveItem,
-								onFocus: onSubMenu2ItemChange
+								key: 'container-3'
 							}, [
-								w(Item, { key: 'container-4-item-1', title: 'sub menu item 1' } ),
-								w(Item, { key: 'container-4-item-2', title: 'sub menu item 2' } ),
-								w(Item, { key: 'container-4-item-3', title: 'sub menu sub menu', action: toggleSubMenu3 }, [
+								w(Item, { key: 'container-3-item-1', title: 'item 1' } ),
+								w(Item, { key: 'container-3-item-2', title: 'item 2' } ),
+								w(Item, { key: 'container-3-item-3', title: 'item 3' } ),
+								w(Item, { key: 'container-3-item-4', title: 'sub menu' }, [
 									w(Container, {
-										key: 'container-5',
-										open: subMenu3OpenState,
-										activeItem: subMenu3ActiveItem,
-										onFocus: onSubMenu3ItemChange
+										key: 'container-4'
 									}, [
-										w(Item, { key: 'container-5-item-1', title: 'sub menu item 1' } ),
-										w(Item, { key: 'container-5-item-2', title: 'sub menu sub menu', action: toggleSubMenu4 }, [
-											w(Container, {
-												key: 'container-6',
-												open: subMenu4OpenState,
-												activeItem: subMenu4ActiveItem,
-												onFocus: onSubMenu4ItemChange
-											}, [
-												w(Item, { key: 'container-6-item-1', title: 'sub menu item 1' } ),
-												w(Item, { key: 'container-6-item-2', title: 'sub menu item 2' } ),
-												w(Item, { key: 'container-6-item-3', title: 'sub menu item 3' } )
-											])
-										]),
-										w(Item, { key: 'container-6-item-3', title: 'sub menu item 3' } )
+										w(Item, { key: 'container-4-item-1', title: 'item 1' } ),
+										w(Item, { key: 'container-4-item-2', title: 'item 2' } ),
+										w(Item, { key: 'container-4-item-3', title: 'item 3' } )
 									])
 								])
 							])
-						]),
-						w(Item, { key: 'container-3-item-3', title: 'sub menu item 3' } )
+						])
 					])
 				])
 			])

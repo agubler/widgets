@@ -1,48 +1,132 @@
-import { WidgetBase, afterRender } from '@dojo/widget-core/WidgetBase';
-import { Constructor, DNode, WidgetProperties } from '@dojo/widget-core/interfaces';
+import { WidgetBase } from '@dojo/widget-core/WidgetBase';
+import { DNode, WNode, WidgetProperties } from '@dojo/widget-core/interfaces';
 import { ThemeableMixin, theme } from '@dojo/widget-core/mixins/Themeable';
-import { v, isWNode, isHNode } from '@dojo/widget-core/d';
+import { v, isWNode, w } from '@dojo/widget-core/d';
 import { Keys } from '../common/util';
 
 import * as css from './styles/basicMenu.m.css';
 
 export interface ContainerProperties extends WidgetProperties {
-	open?: boolean;
-	activeItem: number;
-	onFocus: Function;
+	key: string;
+	onFocus?: Function;
 	role?: string;
+	openPath?: string[];
+	selectedKey?: string;
+	autoFocus?: boolean;
 }
 
 export interface ItemProperties extends WidgetProperties {
 	title: string;
 	action?: Function;
-	onClick?: Function;
 }
 
-export class Container extends FocusManagerMixin(WidgetBase)<ContainerProperties> {
+export interface WrapperProperties extends WidgetProperties {
+	key: string;
+	parent: string;
+	openPath: string[];
+	selectedKey?: string;
+	onFocus: Function;
+	onAction?: Function;
+	item: WNode;
+	scheduleFocus: boolean;
+	autoFocus: boolean;
+	setScheduleFocus: Function;
+}
+
+export class Container extends WidgetBase<ContainerProperties> {
+
+	private _scheduleFocus = false;
+
+	public scheduleFocus(value: boolean) {
+		this._scheduleFocus = value;
+	}
 
 	private _keyDown(event: KeyboardEvent) {
 		let nextActiveItem;
+		let selected = false;
 		switch (event.which) {
 			case Keys.Up:
 				event.preventDefault();
 				event.stopPropagation();
-				nextActiveItem = this.properties.activeItem === 0 ? this.children.length - 1 : this.properties.activeItem - 1;
+				for (let i = this.children.length; i >= 0; i--) {
+					const child = this.children[i];
+					if (isWNode(child)) {
+						if (selected) {
+							nextActiveItem = child.properties.key;
+							break;
+						}
+						if (child.properties.key === this.properties.selectedKey) {
+							selected = true;
+							continue;
+						}
+					}
+				}
+				if (!nextActiveItem) {
+					nextActiveItem = (<any> this.children)[this.children.length - 1].properties.key;
+				}
 				this.scheduleFocus(true);
-				this.properties.onFocus(nextActiveItem);
+				this.properties.onFocus && this.properties.onFocus(nextActiveItem, undefined);
 				break;
 			case Keys.Down:
 				event.preventDefault();
 				event.stopPropagation();
-				nextActiveItem = this.properties.activeItem === this.children.length - 1 ? 0 : this.properties.activeItem + 1;
+				for (let i = 0; i < this.children.length; i++) {
+					const child = this.children[i];
+					if (isWNode(child)) {
+						if (selected) {
+							nextActiveItem = child.properties.key;
+							break;
+						}
+						if (child.properties.key === this.properties.selectedKey) {
+							selected = true;
+							continue;
+						}
+					}
+				}
+				if (!nextActiveItem) {
+					nextActiveItem = (<any> this.children)[0].properties.key;
+				}
 				this.scheduleFocus(true);
-				this.properties.onFocus(nextActiveItem);
+				this.properties.onFocus && this.properties.onFocus(nextActiveItem, undefined);
 				break;
 		}
 	}
 
+	protected _onFocus(value: string, path: string[], expandTo?: string) {
+		if (expandTo && path.indexOf(expandTo) !== -1) {
+			path = path.slice(0, path.indexOf(expandTo) + 1);
+		}
+		this.scheduleFocus(false);
+		this.properties.onFocus && this.properties.onFocus(value, path);
+	}
+
 	protected render(): DNode {
-		const { open = true } = this.properties;
+		const { openPath = [ this.properties.key ], selectedKey } = this.properties;
+		const open = openPath.indexOf(this.properties.key) !== -1;
+		let children: DNode[] = [];
+		if (open) {
+			const childExists = this.children.some((child: WNode) => {
+				return child.properties.key === selectedKey;
+			});
+			children = this.children.map((child: WNode, i) => {
+
+				if (!selectedKey && i === 0) {
+					this._onFocus((<any> child).properties.key, openPath);
+				}
+
+				return w(Wrapper, {
+					key: <string> child.properties.key,
+					parent: this.properties.key,
+					item: child,
+					openPath,
+					selectedKey: i === 0 && !childExists ? child.properties.key : selectedKey,
+					onFocus: this._onFocus,
+					autoFocus: this.properties.autoFocus || false,
+					scheduleFocus: selectedKey === child.properties.key && this._scheduleFocus,
+					setScheduleFocus: this.scheduleFocus
+				});
+			});
+		}
 
 		return open ?
 			v('ul', {
@@ -51,44 +135,173 @@ export class Container extends FocusManagerMixin(WidgetBase)<ContainerProperties
 				onkeydown: this._keyDown,
 				'aria-labelledby': (<any> this.properties).labelledBy,
 				role: this.properties.role || 'menubar'
-			}, this.children) : null;
+			}, children) : null;
 	}
 }
 
-@theme(css)
-export class Item extends FocusSchedulerMixin(ThemeableMixin(WidgetBase))<any> {
+class Wrapper extends WidgetBase<WrapperProperties> {
 
-	// TODO update the index and call the action
-	private onClick(event: MouseEvent) {
-		event.stopPropagation();
-		this.properties.onFocus(this.properties.index);
-		this.properties.action && this.properties.action();
+	private _collapseMenu(scheduleFocus: boolean = true) {
+		let result = false;
+		const container = this.getContainer();
+		let openPath = [ ...this.properties.openPath ];
+		if (container && container.properties.key) {
+			const containerKey = container.properties.key;
+			const pathIndex = openPath.indexOf(containerKey);
+			if (pathIndex === (openPath.length - 1)) {
+				result = true;
+				openPath.pop();
+				console.log('openPath', openPath, 'container', container.properties.key, 'parent', this.properties.parent);
+
+				openPath = openPath.slice(0, openPath.indexOf(this.properties.parent) + 1);
+
+				this.properties.onFocus(this.properties.key, openPath, container.properties.key);
+				this.properties.setScheduleFocus(scheduleFocus);
+			}
+		}
+		return result;
 	}
 
-	// TODO seperate orientation key module perhaps?
+	private _expandMenu(expand: boolean = true) {
+		let openPath = [ ...this.properties.openPath ];
+		const container = this.getContainer();
+		if (container && container.properties.key) {
+			const containerKey = container.properties.key;
+			const pathIndex = openPath.indexOf(containerKey);
+			if (pathIndex === -1) {
+				openPath = openPath.slice(0, openPath.indexOf(this.properties.parent) + 1);
+				openPath.push(containerKey);
+				console.log('openPath', openPath, 'container', container.properties.key, 'parent', this.properties.parent);
+				this.properties.onFocus(this.properties.key, openPath, container.properties.key);
+				this.properties.setScheduleFocus(true);
+			}
+		}
+	}
+
+	render() {
+		const { item: wrappedItem } = this.properties;
+		const container = wrappedItem.children[0];
+		if (isWNode(container)) {
+			const containerProperties: any = container.properties;
+			// pass the container properties down.
+			containerProperties.openPath = this.properties.openPath;
+			containerProperties.selectedKey = this.properties.selectedKey;
+			containerProperties.onFocus = this.properties.onFocus;
+			containerProperties.autoFocus = true;
+			containerProperties.expandMenu = this._expandMenu.bind(this);
+			containerProperties.collapseMenu = this._collapseMenu.bind(this);
+			// add toggle menu to item
+			(<any> wrappedItem).properties.expandMenu = this._expandMenu.bind(this);
+			(<any> wrappedItem).properties.collapseMenu = this._collapseMenu.bind(this);
+			(<any> wrappedItem).properties.controls = container.properties.key;
+
+		}
+		(<any> wrappedItem).properties.openPath = this.properties.openPath;
+		(<any> wrappedItem).properties.onFocus = this.properties.onFocus;
+		(<any> wrappedItem).properties.parent = this.properties.parent;
+		(<any> wrappedItem).properties.selectedKey = this.properties.selectedKey;
+		(<any> wrappedItem).properties.scheduleFocus = this.properties.scheduleFocus;
+		(<any> wrappedItem).properties.autoFocus = this.properties.autoFocus;
+
+		return wrappedItem;
+	}
+
+	private getContainer(): WNode | undefined {
+		const container = this.properties.item.children[0];
+		if (isWNode(container)) {
+			return container;
+		}
+		return undefined;
+	}
+}
+
+let createFocusCount = 0;
+let updatedFocusCount = 0;
+
+@theme(css)
+export class Item extends ThemeableMixin(WidgetBase)<any> {
+
+	private _preventFocus = false;
+	private _preventClick = false;
+
+	private onClick(event: MouseEvent) {
+		event.stopPropagation();
+		if (!this._preventClick) {
+			this.performAction();
+		}
+		else {
+			event.stopPropagation();
+			this._preventClick = false;
+		}
+
+	}
+
+	private performAction() {
+		const { action, openPath, controls, expandMenu, collapseMenu } = this.properties;
+		const subMenuAction = openPath.indexOf(controls) > -1 ? collapseMenu : expandMenu;
+		if (subMenuAction) {
+			subMenuAction();
+		}
+		else {
+			if (action) {
+				action();
+			}
+		}
+	}
+
 	private onKeyDown(event: KeyboardEvent) {
+		console.log('keyboard');
 		switch (event.which) {
 			case Keys.Space:
 				event.preventDefault();
 				event.stopPropagation();
-				this.properties.action && this.properties.action();
+				this.performAction();
 			break;
 			case Keys.Right:
-				if (this.properties.action) {
-					this.properties.action(true);
+				if (this.properties.expandMenu) {
+					event.preventDefault();
+					event.stopPropagation();
+					this.properties.expandMenu();
+					this._preventFocus = true;
 				}
-				event.preventDefault();
-				event.stopPropagation();
+			break;
+			case Keys.Down:
+			case Keys.Up:
+				this._preventFocus = true;
 			break;
 			case Keys.Left:
 			case Keys.Escape:
-				if (this.properties.action && (!this.hasSubMenu() || this.hasOpenSubMenu())) {
-					event.preventDefault();
-					event.stopPropagation();
-					this.properties.retrieveFocus();
-					this.properties.action(false);
+				if (this.properties.collapseMenu) {
+					const result = this.properties.collapseMenu(true);
+					if (result) {
+						this._preventFocus = true;
+						event.preventDefault();
+						event.stopPropagation();
+					}
 				}
 			break;
+		}
+	}
+
+	protected onElementCreated(element: HTMLElement, key: string) {
+		if (key === this.getFocusTarget()) {
+			const { onFocus, scheduleFocus = false } = this.properties;
+			if (scheduleFocus  || (this.properties.autoFocus && this.properties.key === this.properties.selectedKey)) {
+				console.log('focus from created', ++createFocusCount, 'key', this.properties.key, 'path', this.properties.openPath);
+				element.focus();
+				onFocus(this.properties.key, this.properties.openPath);
+			}
+		}
+	}
+
+	protected onElementUpdated(element: HTMLElement, key: string) {
+		if (key === this.getFocusTarget()) {
+			const { onFocus, scheduleFocus = false } = this.properties;
+			if (scheduleFocus) {
+				console.log('focus from updated', ++updatedFocusCount, 'key', this.properties.key, 'path', this.properties.openPath);
+				element.focus();
+				onFocus(this.properties.key, this.properties.openPath);
+			}
 		}
 	}
 
@@ -96,18 +309,34 @@ export class Item extends FocusSchedulerMixin(ThemeableMixin(WidgetBase))<any> {
 		return `item-label-${this.properties.key}`;
 	}
 
-	// TODO this assumes that the children is a Container! I think this is better off to be a property...
+	private onFocus() {
+		console.log('focus');
+		if (!this._preventFocus) {
+			console.log('doing focus');
+			this.properties.onFocus(
+				this.properties.key,
+				this.properties.openPath,
+				this.properties.parent);
+			this.performAction();
+			this._preventClick = true;
+		}
+		else {
+			this._preventFocus = false;
+		}
+	}
+
 	protected render(): DNode {
 		return v('li', {
 			id: this.properties.key,
-			onclick: this.onClick,
 			onkeydown: this.onKeyDown,
+			onclick: this.onClick,
 			key: this.properties.key,
 			classes: this.classes(css.item),
 			role: 'none'
 		}, [
 			v('div', {
-				tabIndex: this.properties.activeItem ? 0 : -1,
+				tabIndex: this.properties.selectedKey === this.properties.key ? 0 : -1,
+				onfocus: this.onFocus,
 				classes: this.classes(css.item),
 				key: `item-label-${this.properties.key}`,
 				role: 'menuitem'
@@ -115,116 +344,4 @@ export class Item extends FocusSchedulerMixin(ThemeableMixin(WidgetBase))<any> {
 			...this.children
 		]);
 	}
-
-	// TODO don't like this
-	@afterRender()
-	protected a11y(result: DNode) {
-		if (isHNode(result) || isWNode(result)) {
-			if (result.children && result.children.length === 2) {
-				(<any> result.children[1]).properties.labelledBy = this.properties.key;
-				(<any> result.children[1]).properties.autoFocus = true;
-				(<any> result.children[1]).properties.role = 'menu';
-				(<any> result.children[0]).properties['aria-controls'] = (<any> result.children[1]).properties.key;
-				if (this.hasOpenSubMenu()) {
-					(<any> result.children[0]).properties['aria-expanded'] = 'true';
-				}
-				(<any> result.children[0]).properties['aria-haspopup'] = 'true';
-			}
-		}
-
-		return result;
-	}
-
-	private hasSubMenu() {
-		return this.children && this.children[0];
-	}
-
-	private hasOpenSubMenu() {
-		return this.hasSubMenu() && (<any> this.children[0]).properties.open;
-	}
-}
-
-interface FocusManagerMixin {
-	scheduleFocus(value: boolean): void;
-}
-
-function FocusManagerMixin<T extends Constructor<WidgetBase<any>>>(Base: T): T & Constructor<FocusManagerMixin> {
-
-	class FocusManager extends Base {
-
-		private _scheduleFocus = false;
-
-		public scheduleFocus(value: boolean) {
-			this._scheduleFocus = value;
-		}
-
-		@afterRender()
-		protected decorateFocus(result: DNode) {
-			if (!(typeof result === 'string') && result !== null) {
-				const { _scheduleFocus, onFocus, retrieveFocus, properties: { activeItem, autoFocus } } = this;
-				result.children.forEach((node: DNode, i) => {
-					if (isWNode(node)) {
-						const active = i === activeItem;
-						(<any> node.properties).index = i;
-						(<any> node.properties).activeItem = active;
-						(<any> node.properties).retrieveFocus = retrieveFocus;
-						(<any> node.properties).autoFocus = autoFocus && active;
-						(<any> node.properties).scheduleFocus = _scheduleFocus && active;
-						(<any> node.properties).onFocus = onFocus;
-					}
-				});
-			}
-			return result;
-		}
-
-		private onFocus(item?: number) {
-			this.scheduleFocus(false);
-			if (item !== undefined) {
-				this.properties.onFocus(item);
-			}
-		}
-
-		private retrieveFocus() {
-			this.scheduleFocus(true);
-		}
-	}
-
-	return FocusManager;
-}
-
-let createFocusCount = 0;
-let updatedFocusCount = 0;
-
-function FocusSchedulerMixin<T extends Constructor<WidgetBase<any>>>(Base: T): T {
-
-	class FocusScheduler extends Base {
-
-		protected onElementCreated(element: HTMLElement, key: string) {
-			if (key === this.getFocusTarget()) {
-				const { onFocus, scheduleFocus = false } = this.properties;
-				if (scheduleFocus || this.properties.autoFocus) {
-					console.log('focus from created', ++createFocusCount);
-					element.focus();
-					onFocus();
-				}
-			}
-		}
-
-		protected onElementUpdated(element: HTMLElement, key: string) {
-			if (key === this.getFocusTarget()) {
-				const { onFocus, scheduleFocus = false } = this.properties;
-				if (scheduleFocus) {
-					console.log('focus from updated', ++updatedFocusCount);
-					element.focus();
-					onFocus();
-				}
-			}
-		}
-
-		protected getFocusTarget() {
-			return this.properties.key;
-		}
-	}
-
-	return FocusScheduler;
 }
