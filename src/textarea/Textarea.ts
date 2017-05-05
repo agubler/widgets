@@ -153,7 +153,7 @@ export default class Textarea extends TextareaBase<TextareaProperties> {
 
 		if (label) {
 			textareaWidget = w(Label, {
-				classes: this.classes(css.root, ...stateClasses),
+				classes: this.classes(css.root, ...stateClasses).get(),
 				formId,
 				label
 			}, [ textarea ]);

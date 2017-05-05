@@ -14,7 +14,7 @@ registerSuite({
 		label = new Label();
 		label.setProperties({
 			formId: 'foo',
-			classes: label.classes(baseCss.visuallyHidden),
+			classes: label.classes(baseCss.visuallyHidden).get(),
 			label: 'baz'
 		});
 		const vnode = <VNode> label.__render__();
