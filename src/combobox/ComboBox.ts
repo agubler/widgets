@@ -128,7 +128,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		return `${this._idBase}-result${index}`;
 	}
 
-	private _onArrowClick() {
+	private _onArrowClick(event: MouseEvent) {
+		event.stopPropagation();
 		const {
 			disabled,
 			readOnly
@@ -140,7 +141,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		}
 	}
 
-	private _onClearClick() {
+	private _onClearClick(event: MouseEvent) {
+		event.stopPropagation();
 		const { key, onChange } = this.properties;
 
 		this._callInputFocus = true;
@@ -240,7 +242,8 @@ export class ComboBoxBase<P extends ComboBoxProperties = ComboBoxProperties> ext
 		this.invalidate();
 	}
 
-	private _onResultMouseDown() {
+	private _onResultMouseDown(event: MouseEvent) {
+		event.stopPropagation();
 		// Maintain underlying input focus on next render
 		this._ignoreBlur = true;
 	}
