@@ -17,7 +17,8 @@ import {
 	compareId,
 	MockMetaMixin,
 	noop,
-	compareAriaControls
+	compareAriaControls,
+	stubEvent
 } from '../../../common/tests/support/test-helpers';
 
 const harness = createHarness([ compareId, compareAriaControls ]);
@@ -326,9 +327,9 @@ registerSuite('Select', {
 			'open/close on trigger click'() {
 				const h = harness(() => w(Select, testProperties));
 				h.expect(() => expected(expectedSingle(true)));
-				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onclick', stubEvent);
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
-				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onclick', stubEvent);
 				h.expect(() => expected(expectedSingle(true)));
 			},
 
@@ -341,18 +342,18 @@ registerSuite('Select', {
 					onChange
 				}));
 
-				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onclick', stubEvent);
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 				h.trigger('@listbox', 'onOptionSelect', testOptions[1]);
 				h.expect(() => expected(expectedSingle(true)));
 				assert.isTrue(onChange.calledOnce, 'onChange handler called when option selected');
 
 				// open widget a second time
-				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onclick', stubEvent);
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 				h.trigger('@trigger', 'onmousedown');
 				h.trigger(`.${css.dropdown}`, 'onfocusout');
-				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onclick', stubEvent);
 				h.expect(() => expected(expectedSingle(true)));
 			},
 
@@ -439,25 +440,25 @@ registerSuite('Select', {
 				}));
 
 				h.trigger('@trigger', 'onkeydown', {
-					which: Keys.Down
+					which: Keys.Down, ...stubEvent
 				});
 
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
-					which: Keys.Down
+					which: Keys.Down, ...stubEvent
 				});
 
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
-					which: Keys.Escape
+					which: Keys.Escape, ...stubEvent
 				});
 
 				h.expect(() => expected(expectedSingle(true)));
 
 				h.trigger(`.${css.dropdown}`, 'onkeydown', {
-					which: Keys.Down
+					which: Keys.Down, ...stubEvent
 				});
 
 				h.expect(() => expected(expectedSingle(true)));
@@ -470,7 +471,7 @@ registerSuite('Select', {
 					options: testOptions,
 					onBlur
 				}));
-				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
@@ -487,7 +488,7 @@ registerSuite('Select', {
 					onBlur
 				}));
 
-				h.trigger('@trigger', 'onclick');
+				h.trigger('@trigger', 'onclick', stubEvent);
 				h.trigger('@trigger', 'onblur');
 				h.expect(() => expected(expectedSingle(true, false, true, '', 0, true)));
 
