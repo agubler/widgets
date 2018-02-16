@@ -1,0 +1,145 @@
+/*!
+ * 
+ * [Dojo](https://dojo.io/)
+ * Copyright [JS Foundation](https://js.foundation/) & contributors
+ * [New BSD license](https://github.com/dojo/meta/blob/master/LICENSE)
+ * All rights reserved
+ * 
+ */
+:root {
+
+	/* Z-index levels */
+}
+
+._3aPtridJ {
+	position: relative;
+	border: 1px solid black;
+	background: #FFF;
+}
+
+._3e8RxEe6 {
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	        transform: translateY(-50%);
+	right: 5px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+	padding: 1px 3px;
+}
+
+._3N5XF5kG {
+	display: none;
+}
+
+._3e8RxEe6:after {
+	content: '\2715';
+	display: block;
+	font-size: 14px;
+}
+
+._3Z5km1UL {}
+
+._1hH1amU7 {
+	background: #FFF;
+	border-color: black;
+	border-bottom-color: #FFF;
+	z-index: 1;
+}
+
+._2b3mUWDr, ._2b3mUWDr * {
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+._8RKIWHl5 {
+	border: 1px solid transparent;
+	border-top: 2px solid transparent;
+	text-align: center;
+	display: inline-block;
+	vertical-align: top;
+	width: auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+	position: relative;
+	top: 1px;
+}
+
+._8RKIWHl5:focus:not(._1zp_0pzP) {
+	font-weight: bold;
+}
+
+._1zp_0pzP {
+	font-style: italic;
+	cursor: default;
+	color: #bbb;
+}
+
+._1tHyollK ._33yfGlvl {
+	display: inline-block;
+	vertical-align: top;
+}
+
+._1tHyollK ._3kYCmqPM {
+	display: inline-block;
+	vertical-align: top;
+}
+
+._1tHyollK ._8RKIWHl5 {
+	border-top: 1px solid transparent;
+	border-left: 2px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-right: 1px solid transparent;
+	display: block;
+	top: 0;
+	left: 1px;
+}
+
+._1tHyollK ._1hH1amU7 {
+	border-top-color: #34495e;
+	border-left-color: #34495e;
+	border-bottom-color: #34495e;
+	border-right: 1px solid #FFF;
+}
+
+.p15-Q61E ._8RKIWHl5 {
+	border-top: none;
+	border-bottom: 2px solid transparent;
+	top: -1px;
+}
+
+.p15-Q61E ._1hH1amU7 {
+	border-bottom-color: #34495e;
+}
+
+.HcI9HGeJ ._33yfGlvl {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.HcI9HGeJ ._3kYCmqPM {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.HcI9HGeJ ._8RKIWHl5 {
+	border-top: 1px solid transparent;
+	border-right: 2px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-left: none;
+	display: block;
+	top: 0;
+	left: -1px;
+}
+
+.HcI9HGeJ ._1hH1amU7 {
+	border-top-color: #34495e;
+	border-right-color: #34495e;
+	border-bottom-color: #34495e;
+}
+
+/*# sourceMappingURL=tab-controller-0.4.3-pre.css.map*/

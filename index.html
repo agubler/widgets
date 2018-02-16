@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>custom-element</title>
+		<meta name="theme-color" content="#222127">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://rawgit.com/webcomponents/custom-elements/master/src/native-shim.js"></script>
+		<script src="https://rawgit.com/webcomponents/custom-elements/master/custom-elements.min.js"></script>
+		<link rel="stylesheet" href="dist/split-pane/split-pane-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/tab-controller/tab-controller-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/tab/tab-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/button/button-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/text-input/text-input-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/accordion-pane/accordion-pane-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/toolbar/toolbar-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/dialog/dialog-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/calendar/calendar-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/title-pane/title-pane-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/textarea/textarea-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/slider/slider-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/label/label-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/checkbox/checkbox-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/select/select-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/progress/progress-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/radio/radio-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/time-picker/time-picker-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="dist/enhanced-text-input/enhanced-text-input-0.4.3-pre.css"/>
+		<link rel="stylesheet" href="main-0.1.4-pre.css">
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				font-family: arial;
+			}
+
+			.ce-layout {
+				margin: 5px;
+				display: inline-block;
+			}
+
+			.ce-block {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="main-0.1.4-pre.js" ></script>
+		<dojo-toolbar id="dojoToolbar">
+			<dojo-split-pane id="dojoSplitPane">
+				<dojo-accordion-pane id="dojoAccordianPane">
+					<dojo-title-pane id="themePane" key="theme-pane" title="Theme"></dojo-title-pane>
+					<dojo-title-pane key="dialog-pane" title="Dialog">
+						<dojo-button id="dojoDialogButton" label="Open Dialog"></dojo-button>
+						<dojo-dialog id="dojoDialog" title="Dialog"></dojo-dialog>
+					</dojo-title-pane>
+					<dojo-title-pane key="calendar-pane" title="Calendar">
+							<dojo-calendar id="dojoCalendar"></dojo-calendar>
+							<dojo-dom id="dojoCalendarLabel" tag="div"></dojo-dom>
+					</dojo-title-pane>
+				</dojo-accordion-pane>
+				<dojo-tab-controller id="dojoTabController" activeindex="0">
+					<dojo-tab id="dojoTabBasic">
+						<dojo-dom tag="h2" label="Buttons"></dojo-dom>
+						<dojo-dom tag="div" label="Enabled"></dojo-dom>
+						<dojo-button class="ce-layout" label="Basic Button"></dojo-button>
+						<dojo-button class="ce-layout" label="Icon Button"></dojo-button>
+						<dojo-button class="ce-layout" id="dojoEnabledPopupButton" label="Popup"></dojo-button>
+						<dojo-button class="ce-layout" id="dojoEnabledToggleButton" label="Toggle"></dojo-button>
+						<dojo-dom tag="div" label="Disabled"></dojo-dom>
+						<dojo-button class="ce-layout" id="dojoDisabledBasicButton" label="Basic Button"></dojo-button>
+						<dojo-button class="ce-layout" id="dojoDisabledIconButton" label="Icon Button"></dojo-button>
+						<dojo-button class="ce-layout" id="dojoDisabledPopupButton" label="Popup"></dojo-button>
+						<dojo-button class="ce-layout" id="dojoDisabledToggleButton" label="Toggle"></dojo-button>
+						<dojo-dom tag="h2" label="Checkbox"></dojo-dom>
+						<dojo-checkbox class="ce-layout ce-block" id="dojoCheckedCheckbox" label="Checked checkbox"></dojo-checkbox>
+						<dojo-checkbox class="ce-layout ce-block" id="dojoDisabledCheckedCheckbox" label="Disabled checked checkbox"></dojo-checkbox>
+						<dojo-checkbox class="ce-layout ce-block" id="dojoDisabledUnCheckedCheckbox" label="Disabled unchecked checkbox"></dojo-checkbox>
+					</dojo-tab>
+					<dojo-tab id="dojoTabInputs">
+						<dojo-dom tag="h2" label="Text Input"></dojo-dom>
+						<dojo-text-input class="ce-layout ce-block" label="Plain Text Input"></dojo-text-input>
+						<dojo-text-input class="ce-layout ce-block" id="dojoRequiredTextInput" placeholder="World" label="Required Text Input"></dojo-text-input>
+						<dojo-text-input class="ce-layout ce-block" id="dojoEmailTextInput" label="Email Text Input" type="email" placeholder="Email Address"></dojo-text-input>
+						<dojo-text-input class="ce-layout ce-block" id="dojoDisabledTextInput" label="Disabled Text Input"></dojo-text-input>
+						<dojo-dom tag="h2" label="Enhanced Text Input"></dojo-dom>
+						<dojo-enhanced-text-input class="ce-layout ce-block" id="dojoTwitterEnhancedInput" label="Twitter Username" placeholder="username"></dojo-enhanced-text-input>
+						<dojo-enhanced-text-input class="ce-layout ce-block" id="dojoPriceEnhancedInput" label="Price, rounded to the nearest dollar" type="number"></dojo-enhanced-text-input>
+						<dojo-dom tag="h2" label="Time Picker"></dojo-dom>
+						<dojo-dom tag="div" label="Basic Time Picker"></dojo-dom>
+						<dojo-time-picker class="ce-layout" id="dojoBasicTimePicker" label="Basic Time Picker"></dojo-time-picker>
+						<dojo-dom tag="div" label="Native Time Picker"></dojo-dom>
+						<dojo-time-picker class="ce-layout" id="dojoNativeTimePicker"></dojo-time-picker>
+						<dojo-dom tag="div" label="Disabled Basic Time Picker"></dojo-dom>
+						<dojo-time-picker class="ce-layout" id="dojoDisabledBasicTimePicker"></dojo-time-picker>
+						<dojo-dom tag="div" label="Disabled Native Time Picker"></dojo-dom>
+						<dojo-time-picker class="ce-layout" id="dojoDisabledNativeTimePicker"></dojo-time-picker>
+					</dojo-tab>
+					<dojo-tab id="dojoTabTextArea">
+						<dojo-dom tag="h3" label="Text Areas"></dojo-dom>
+						<dojo-dom tag="div" label="Example Text Area"></dojo-dom>
+						<dojo-text-area id="dojoTextarea"></dojo-text-area>
+						<dojo-dom tag="div" label="Disabled Text Area"></dojo-dom>
+						<dojo-text-area id="dojoDisabledTextarea"></dojo-text-area>
+					</dojo-tab>
+					<dojo-tab id="dojoTabSelects">
+						<dojo-dom tag="h3" label="Selects"></dojo-dom>
+						<dojo-select id="dojoSimpleSelect" label="Simple string array"></dojo-select>
+						<dojo-select id="dojoSimpleDisabledSelect" label="Simple string array (disabled)"></dojo-select>
+						<dojo-select id="dojoNativeSelect" label="Simple string array (native)"></dojo-select>
+						<dojo-select id="dojoDisabledNativeSelect" label="Simple string array (native, disabled)"></dojo-select>
+						<dojo-select id="dojoComplexSelect" label="Complex options array"></dojo-select>
+						<dojo-select id="dojoComplexNativeSelect" label="Complex options array (native)"></dojo-select>
+					</dojo-tab>
+					<dojo-tab id="dojoTabProgress">
+						<dojo-dom tag="h3" label="Progress Bars"></dojo-dom>
+						<dojo-dom tag="div" label="value: 50%"></dojo-dom>
+						<dojo-progress id="dojoProgress"></dojo-progress>
+						<dojo-dom tag="div" label="value: 0.3, max: 1"></dojo-dom>
+						<dojo-progress id="dojoProgressMaxOne"></dojo-progress>
+						<dojo-dom tag="div" label="value: 250, custom output function"></dojo-dom>
+						<dojo-progress id="dojoProgressCustomOutput"></dojo-progress>
+						<dojo-dom tag="div" label="value: 10, showOutput: false"></dojo-dom>
+						<dojo-progress id="dojoProgressNoOutput"></dojo-progress>
+					</dojo-tab>
+					<dojo-tab id="dojoTabSlider">
+						<dojo-dom tag="h3" label="Sliders"></dojo-dom>
+						<dojo-dom tag="div" label="Horizontal slider, value: 50"></dojo-dom>
+						<dojo-slider id="dojoSlider" label="'How much do you like tribbles?'"></dojo-slider>
+						<dojo-dom tag="div" label="Disabled slider, value: 30"></dojo-dom>
+						<dojo-slider id="dojoDisabledSlider" label="Disabled Slider"></dojo-slider>
+						<dojo-dom tag="div" label="Vertical slider with validation"></dojo-dom>
+						<dojo-slider id="dojoVerticalSlider"></dojo-slider>
+					</dojo-tab>
+				</dojo-tab-controller>
+			</dojo-split-pane>
+		</dojo-toolbar>
+		<script src="show-case.js"></script>
+		<script src="dist/calendar/calendar-0.4.3-pre.js"></script>
+		<script src="dist/button/button-0.4.3-pre.js"></script>
+		<script src="dist/text-input/text-input-0.4.3-pre.js"></script>
+		<script src="dist/tab/tab-0.4.3-pre.js"></script>
+		<script src="dist/tab-controller/tab-controller-0.4.3-pre.js"></script>
+		<script src="dist/textarea/textarea-0.4.3-pre.js"></script>
+		<script src="dist/slider/slider-0.4.3-pre.js"></script>
+		<script src="dist/select/select-0.4.3-pre.js"></script>
+		<script src="dist/title-pane/title-pane-0.4.3-pre.js"></script>
+		<script src="dist/dialog/dialog-0.4.3-pre.js"></script>
+		<script src="dist/accordion-pane/accordion-pane-0.4.3-pre.js"></script>
+		<script src="dist/split-pane/split-pane-0.4.3-pre.js"></script>
+		<script src="dist/toolbar/toolbar-0.4.3-pre.js"></script>
+		<script src="dist/label/label-0.4.3-pre.js"></script>
+		<script src="dist/progress/progress-0.4.3-pre.js"></script>
+		<script src="dist/radio/radio-0.4.3-pre.js"></script>
+		<script src="dist/checkbox/checkbox-0.4.3-pre.js"></script>
+		<script src="dist/enhanced-text-input/enhanced-text-input-0.4.3-pre.js"></script>
+		<script src="dist/time-picker/time-picker-0.4.3-pre.js"></script>
+		<script src="dist/dom-widget/dom-widget-0.4.3-pre.js"></script>
+	</body>
+</html>

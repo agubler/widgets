@@ -1,0 +1,335 @@
+/*!
+ * 
+ * [Dojo](https://dojo.io/)
+ * Copyright [JS Foundation](https://js.foundation/) & contributors
+ * [New BSD license](https://github.com/dojo/meta/blob/master/LICENSE)
+ * All rights reserved
+ * 
+ */
+:root {
+
+	/* Z-index levels */
+}
+
+@-webkit-keyframes _1GpxvABe {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes _1GpxvABe {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+._1GpxvABe {
+	-webkit-animation-duration: .2s;
+	        animation-duration: .2s;
+	-webkit-animation-fill-mode: both;
+	        animation-fill-mode: both;
+	-webkit-animation-name: _1GpxvABe;
+	        animation-name: _1GpxvABe;
+}
+
+@-webkit-keyframes ClAlvWcr {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes ClAlvWcr {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.ClAlvWcr {
+	-webkit-animation-duration: .2s;
+	        animation-duration: .2s;
+	-webkit-animation-fill-mode: both;
+	        animation-fill-mode: both;
+	-webkit-animation-name: ClAlvWcr;
+	        animation-name: ClAlvWcr;
+}
+._1KkV1STO {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+._17wAj7Jh {
+	position: fixed;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+._2BC4hb1b,
+._2RorwxMg {
+	height: 100%;
+	top: 0;
+}
+
+._3sgjT6J4,
+._1agUbmbG {
+	width: 100%;
+	left: 0;
+}
+
+._2BC4hb1b {
+	left: 0;
+	-webkit-transform: translateX(-100%);
+	        transform: translateX(-100%)
+}
+
+._2RorwxMg {
+	right: 0;
+	-webkit-transform: translateX(100%);
+	        transform: translateX(100%);
+}
+
+._3sgjT6J4 {
+	top: 0;
+	-webkit-transform: translateY(-100%);
+	        transform: translateY(-100%)
+}
+
+._1agUbmbG {
+	bottom: 0;
+	-webkit-transform: translateY(100%);
+	        transform: translateY(100%);
+}
+
+._2BC4hb1b._2iQWOndG {
+	-webkit-transform: translateX(-100%) !important;
+	        transform: translateX(-100%) !important;
+}
+
+._2RorwxMg._2iQWOndG {
+	-webkit-transform: translateX(100%) !important;
+	        transform: translateX(100%) !important;
+}
+
+._3sgjT6J4._2iQWOndG {
+	-webkit-transform: translateY(-100%) !important;
+	        transform: translateY(-100%) !important;
+}
+
+._1agUbmbG._2iQWOndG {
+	-webkit-transform: translateY(100%) !important;
+	        transform: translateY(100%) !important;
+}
+
+._2BC4hb1b.T3dHk_MX {
+	-webkit-transform: translateX(0%) !important;
+	        transform: translateX(0%) !important;
+}
+
+._2RorwxMg.T3dHk_MX {
+	-webkit-transform: translateX(0%) !important;
+	        transform: translateX(0%) !important;
+}
+
+._3sgjT6J4.T3dHk_MX {
+	-webkit-transform: translateY(0%) !important;
+	        transform: translateY(0%) !important;
+}
+
+._1agUbmbG.T3dHk_MX {
+	-webkit-transform: translateY(0%) !important;
+	        transform: translateY(0%) !important;
+}
+
+._1mTxAnqL {
+	-webkit-transform: translateX(0%);
+	        transform: translateX(0%);
+}
+:root {
+
+	/* Z-index levels */
+}
+
+._1EF8OdU9 {}
+
+._2QxwFfpD,
+._2Yr2OcKX {
+	-webkit-transition: -webkit-transform ease-in-out .2s;
+	transition: -webkit-transform ease-in-out .2s;
+	transition: transform ease-in-out .2s;
+	transition: transform ease-in-out .2s, -webkit-transform ease-in-out .2s;
+}
+
+._196q1dU8 {
+	background: rgba(66, 66, 66, 0.30000000000000004);
+	z-index: 400;
+}
+
+._2pfCyPB3 { }
+
+._2zXLsa75 { }
+
+._1XSRgqaJ {
+	background-color: #fff;
+	z-index: 401;
+}
+
+.dwWUPDv9 {
+	position: relative;
+}
+
+._3JTD3d6e {
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	        transform: translateY(-50%);
+	right: 35px;
+	cursor: pointer;
+	font-size: 0;
+	border: none;
+	background: none;
+}
+
+._3JTD3d6e i {
+	font-size: 14px;
+}
+
+._1u1xRsnm { }
+
+._1dZo8R7T { }
+
+.avOwIuLu { }
+
+._3m-TOw01 { }
+@font-face {
+	font-family: 'dojo2';
+	src:
+	url(1jRzby-N.ttf) format('truetype'),
+	url(6KF-s-BX.woff) format('woff'),
+	url(1LTNJcFj.svg#dojo2) format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+._10pNbPsM {
+	/* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'dojo2' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-feature-settings: normal;
+	        font-feature-settings: normal;
+	font-variant: normal;
+	text-transform: none;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+._3aQ0FPaj:before {
+	content: "\F078";
+}
+
+._1R6qiYt_:before {
+	content: "\F053";
+}
+
+._3Trs2w90:before {
+	content: "\F054";
+}
+
+._24sizG_0:before {
+	content: "\F00D";
+}
+
+._2PuzohId:before {
+	content: "\F067";
+}
+
+._1g9lMSC_:before {
+	content: "\F068";
+}
+
+._53iE-HRU:before {
+	content: "\F00C";
+}
+
+.EV9oTFDe:before {
+	content: "\F077";
+}
+
+.BX11XLVk:before {
+	content: "\F0D8";
+}
+
+._3SEpYrw1:before {
+	content: "\F0D7";
+}
+
+._12O4unnP:before {
+	content: "\F002";
+}
+
+._1_uuLqIT:before {
+	content: "\F0C9";
+}
+
+._2DDCZkCu:before {
+	content: "\F013";
+}
+
+._1bi8N_32:before {
+	content: "\F06A";
+}
+
+.WKjfpuQL:before {
+	content: "\F059";
+}
+
+.zoAv0-Dq:before {
+	content: "\F05A";
+}
+
+.gpg2PkuI:before {
+	content: "\F095";
+}
+
+._1UQjts4X:before {
+	content: "\F040";
+}
+
+._32ta-SWS:before {
+	content: "\F133";
+}
+
+._3yNqxaxO:before {
+	content: "\F127";
+}
+
+._3Wzm8XNl:before {
+	content: "\F041";
+}
+
+._1v5Zgphq:before {
+	content: "\F023";
+}
+
+.X8InmG0P:before {
+	content: "\F0E0";
+}
+
+/*# sourceMappingURL=slide-pane-0.4.3-pre.css.map*/
