@@ -65,36 +65,6 @@ const baseAssertionWithLabel = baseAssertion.setChildren('@root', [
 	}, [ 'foo' ])
 ]);
 
-const expectedToggle = function(labels = false, checked = false) {
-	if (labels) {
-		return [
-			v('div', {
-				key: 'offLabel',
-				classes: css.offLabel,
-				'aria-hidden': checked ? 'true' : null
-			}, [ 'off' ]),
-			v('div', {
-				key: 'toggle',
-				classes: css.toggleSwitch
-			}),
-			v('div', {
-				key: 'onLabel',
-				classes: css.onLabel,
-				'aria-hidden': checked ? null : 'true'
-			}, [ 'on' ])
-		];
-	}
-
-	return [
-		null,
-		v('div', {
-			key: 'toggle',
-			classes: css.toggleSwitch
-		}),
-		null
-	];
-};
-
 registerSuite('Checkbox', {
 	tests: {
 		'default properties'() {
