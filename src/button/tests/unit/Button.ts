@@ -3,6 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
 import { v, w } from '@dojo/framework/widget-core/d';
+import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 import Button from '../../index';
 import Icon from '../../../icon/index';
@@ -21,34 +22,39 @@ const compareFocusTrue = {
 	comparator: isFocusedComparator
 };
 
+const baseAssertion = assertionTemplate(() => {
+	return v('button', {
+		'~key': 'button',
+		'aria-controls': null,
+		'aria-expanded': null,
+		'aria-haspopup': null,
+		'aria-pressed': null,
+		classes: [css.root, null, null, null],
+		disabled: undefined,
+		id: undefined,
+		name: undefined,
+		focus: noop,
+		onblur: noop,
+		onclick: noop,
+		onfocus: noop,
+		onkeydown: noop,
+		onkeypress: noop,
+		onkeyup: noop,
+		onmousedown: noop,
+		onmouseup: noop,
+		ontouchstart: noop,
+		ontouchend: noop,
+		ontouchcancel: noop,
+		type: undefined,
+		value: undefined
+	}, [null]);
+});
+
 registerSuite('Button', {
 	tests: {
 		'no content'() {
-			const h = harness(() => w(Button, {}), [ compareFocusFalse ]);
-			h.expect(() => v('button', {
-				'aria-controls': null,
-				'aria-expanded': null,
-				'aria-haspopup': null,
-				'aria-pressed': null,
-				classes: [ css.root, null, null, null ],
-				disabled: undefined,
-				id: undefined,
-				name: undefined,
-				focus: noop,
-				onblur: noop,
-				onclick: noop,
-				onfocus: noop,
-				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop,
-				type: undefined,
-				value: undefined
-			}, [ null ]));
+			const h = harness(() => w(Button, {}), [compareFocusFalse]);
+			h.expect(baseAssertion);
 		},
 
 		'properties and attributes'() {
@@ -66,101 +72,47 @@ registerSuite('Button', {
 				},
 				pressed: true,
 				value: 'value'
-			}, ['foo']), [ compareFocusFalse ]);
+			}, ['foo']), [compareFocusFalse]);
 
-			h.expect(() => v('button', {
-				'aria-controls': 'popupId',
-				'aria-describedby': 'baz',
-				'aria-expanded': 'true',
-				'aria-haspopup': 'true',
-				'aria-pressed': 'true',
-				classes: [ css.root, css.disabled, css.popup, css.pressed ],
-				disabled: true,
-				name: 'bar',
-				id: 'qux',
-				focus: noop,
-				onblur: noop,
-				onclick: noop,
-				onfocus: noop,
-				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop,
-				type: 'submit',
-				value: 'value'
-			}, [
-				'foo',
-				v('span', { classes: css.addon }, [
-					w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
-				])
-			]));
+			const assertion = baseAssertion
+				.setProperty('~button', 'aria-controls', 'popupId')
+				.setProperty('~button', 'aria-describedby', 'baz')
+				.setProperty('~button', 'aria-expanded', 'true')
+				.setProperty('~button', 'aria-haspopup', 'true')
+				.setProperty('~button', 'aria-pressed', 'true')
+				.setProperty('~button', 'classes', [css.root, css.disabled, css.popup, css.pressed])
+				.setProperty('~button', 'name', 'bar')
+				.setProperty('~button', 'id', 'qux')
+				.setProperty('~button', 'type', 'submit')
+				.setProperty('~button', 'value', 'value')
+				.setProperty('~button', 'disabled', true)
+				.setChildren('~button', [
+					'foo',
+					v('span', { classes: css.addon }, [
+						w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
+					])
+				]);
+
+			h.expect(assertion);
 		},
 
 		'popup = true'() {
 			const h = harness(() => w(Button, {
 				popup: true
-			}), [ compareFocusFalse ]);
+			}), [compareFocusFalse]);
 
-			h.expect(() => v('button', {
-				'aria-controls': '',
-				'aria-expanded': 'false',
-				'aria-haspopup': 'true',
-				'aria-pressed': null,
-				classes: [ css.root, null, css.popup, null ],
-				disabled: undefined,
-				name: undefined,
-				id: undefined,
-				focus: noop,
-				onblur: noop,
-				onclick: noop,
-				onfocus: noop,
-				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop,
-				type: undefined,
-				value: undefined
-			}, [
-				v('span', { classes: css.addon }, [
-					w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
-				])
-			]));
-		},
+			const assertion = baseAssertion
+				.setProperty('~button', 'aria-controls', '')
+				.setProperty('~button', 'aria-expanded', 'false')
+				.setProperty('~button', 'aria-haspopup', 'true')
+				.setProperty('~button', 'classes', [css.root, null, css.popup, null])
+				.setChildren('~button', [
+					v('span', { classes: css.addon }, [
+						w(Icon, { type: 'downIcon', theme: undefined, classes: undefined })
+					])
+				]);
 
-		'call focus on button node'() {
-			const h = harness(() => w(Button, { focus: () => true }), [ compareFocusTrue ]);
-			h.expect(() => v('button', {
-				'aria-controls': null,
-				'aria-expanded': null,
-				'aria-haspopup': null,
-				'aria-pressed': null,
-				classes: [ css.root, null, null, null ],
-				disabled: undefined,
-				id: undefined,
-				name: undefined,
-				focus: noop,
-				onblur: noop,
-				onclick: noop,
-				onfocus: noop,
-				onkeydown: noop,
-				onkeypress: noop,
-				onkeyup: noop,
-				onmousedown: noop,
-				onmouseup: noop,
-				ontouchstart: noop,
-				ontouchend: noop,
-				ontouchcancel: noop,
-				type: undefined,
-				value: undefined
-			}, [ null ]));
+			h.expect(assertion);
 		},
 
 		events() {
