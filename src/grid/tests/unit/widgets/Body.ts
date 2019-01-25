@@ -93,6 +93,7 @@ describe('Body', () => {
 					columnConfig: [] as any,
 					updater: noop,
 					classes: undefined,
+					onClick: undefined,
 					theme: undefined
 				})
 			);
@@ -185,6 +186,7 @@ describe('Body', () => {
 					item,
 					columnConfig: [] as any,
 					updater: noop,
+					onClick: undefined,
 					classes: undefined,
 					theme: undefined
 				})

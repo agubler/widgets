@@ -25,6 +25,7 @@ export interface BodyProperties<S> {
 	updater: (page: number, rowNumber: number, columnId: string, value: string) => void;
 	pageChange: (page: number) => void;
 	onScroll: (value: number) => void;
+	onRowSelect?: (item: S) => void;
 }
 
 const offscreen = (dnode: DNode) => {
@@ -95,6 +96,7 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			columnConfig,
 			placeholderRowRenderer = defaultPlaceholderRowRenderer,
 			pageChange,
+			onRowSelect,
 			totalRows,
 			theme,
 			classes
@@ -135,7 +137,8 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 						classes,
 						item,
 						columnConfig,
-						updater: this._updater
+						updater: this._updater,
+						onClick: onRowSelect
 					})
 				);
 			} else {

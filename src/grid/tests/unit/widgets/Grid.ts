@@ -98,7 +98,8 @@ describe('Grid', () => {
 					onScroll: noop,
 					height: 300,
 					classes: undefined,
-					theme: undefined
+					theme: undefined,
+					onRowSelect: undefined
 				}),
 				v('div', { key: 'footer' }, [
 					w(Footer, {
@@ -182,6 +183,7 @@ describe('Grid', () => {
 					onScroll: noop,
 					height: 300,
 					classes: undefined,
+					onRowSelect: undefined,
 					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
@@ -245,6 +247,7 @@ describe('Grid', () => {
 					onScroll: noop,
 					height: 300,
 					classes: undefined,
+					onRowSelect: undefined,
 					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
@@ -305,6 +308,7 @@ describe('Grid', () => {
 					onScroll: noop,
 					height: 50,
 					classes: undefined,
+					onRowSelect: undefined,
 					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
@@ -363,6 +367,7 @@ describe('Grid', () => {
 					onScroll: noop,
 					height: 300,
 					classes: undefined,
+					onRowSelect: undefined,
 					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [
@@ -412,6 +417,7 @@ describe('Grid', () => {
 					onScroll: noop,
 					height: 300,
 					classes: undefined,
+					onRowSelect: undefined,
 					theme: undefined
 				}),
 				v('div', { key: 'footer' }, [

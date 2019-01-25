@@ -39,6 +39,7 @@ export interface GridProperties<S> extends ThemedProperties {
 	store?: Store<S>;
 	storeId?: string;
 	customRenderers?: CustomRenderers;
+	onRowSelect?: (row: S) => void;
 }
 
 @theme(css)
@@ -119,7 +120,7 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	protected render(): DNode {
-		const { columnConfig, storeId, theme, classes, customRenderers = {} } = this._getProperties();
+		const { columnConfig, storeId, theme, classes, customRenderers = {}, onRowSelect } = this._getProperties();
 		const { sortRenderer } = customRenderers;
 
 		if (!columnConfig || !this.properties.fetcher) {
@@ -173,7 +174,8 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 				pageChange: this._pageChange,
 				updater: this._updater,
 				onScroll: this._onScroll,
-				height: bodyHeight
+				height: bodyHeight,
+				onRowSelect
 			}),
 			v('div', { key: 'footer' }, [
 				w(Footer, {
