@@ -44,8 +44,8 @@ const DEFAULT_SIZE = 100;
 @theme(css)
 @customElement<SplitPaneProperties>({
 	tag: 'dojo-split-pane',
-	properties: [ 'theme', 'classes', 'extraClasses', 'size', 'collapseWidth' ],
-	attributes: [ 'direction' ],
+	properties: ['theme', 'classes', 'extraClasses', 'size', 'collapseWidth'],
+	attributes: ['direction'],
 	events: [
 		'onCollapse',
 		'onResize'
@@ -56,6 +56,19 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 	private _lastSize?: number;
 	private _position = 0;
 	private _collapsed = false;
+	private _collapseOverridden = false;
+	private _width = 0;
+
+	@diffProperty('collapseWidth')
+	private onWidthChange(o: any, n: any) {
+		if (n.collapseWidth < this._width && this._collapsed) {
+			this._collapsed = false;
+			this._collapseOverridden = true;
+		} else if (n.collapseWidth > this._width && !this._collapsed) {
+			this._collapsed = true;
+			this._collapseOverridden = true;
+		}
+	}
 
 	private _getPosition(event: MouseEvent & TouchEvent) {
 		event.stopPropagation();
@@ -141,15 +154,21 @@ export class SplitPaneBase<P extends SplitPaneProperties = SplitPaneProperties> 
 			collapseWidth
 		} = this.properties;
 
+		const rootDimensions = this.meta(Dimensions).get('root');
+		this._width = rootDimensions.size.width;
+
 		if (collapseWidth) {
 			const { shouldCollapse } = this.meta(Resize).get('root', {
 				shouldCollapse: (dimensions) => {
+					this._collapseOverridden = false;
 					return this._shouldCollapse(dimensions);
 				}
 			});
 
-			// update this._collapsed for check in next render
-			this._collapsed = shouldCollapse;
+			if (!this._collapseOverridden) {
+				// update this._collapsed for check in next render
+				this._collapsed = shouldCollapse;
+			}
 		}
 
 		const paneStyles: {[key: string]: string} = {};
