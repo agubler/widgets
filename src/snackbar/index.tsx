@@ -15,8 +15,8 @@ export interface SnackbarProperties {
 }
 
 export interface SnackbarChildren {
-	messageRenderer: () => RenderResult;
-	actionsRenderer?: () => RenderResult;
+	message: () => RenderResult;
+	actions?: () => RenderResult;
 }
 
 const factory = create({ theme })
@@ -24,7 +24,7 @@ const factory = create({ theme })
 	.children<SnackbarChildren>();
 
 const Snackbar = factory(function Snackbar({ middleware: { theme }, properties, children }) {
-	const { actionsRenderer, messageRenderer } = children()[0];
+	const { actions, message } = children()[0];
 	const { type, open, leading, stacked } = properties();
 	const themedCss = theme.classes(css);
 	return (
@@ -40,11 +40,11 @@ const Snackbar = factory(function Snackbar({ middleware: { theme }, properties, 
 		>
 			<div key="content" classes={[themedCss.content]}>
 				<div key="label" classes={[themedCss.label]} role="status" aria-live="polite">
-					{messageRenderer()}
+					{message()}
 				</div>
-				{actionsRenderer && (
+				{actions && (
 					<div key="actions" classes={[themedCss.actions]}>
-						{actionsRenderer()}
+						{actions()}
 					</div>
 				)}
 			</div>

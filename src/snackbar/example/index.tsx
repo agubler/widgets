@@ -36,8 +36,8 @@ export default class App extends WidgetBase {
 					<Button onClick={() => (this._showPlain = true)}>Show Plain Snackbar</Button>
 					<Snackbar open={this._showPlain}>
 						{{
-							messageRenderer: () => 'Test Snackbar',
-							actionsRenderer: () => (
+							message: () => 'Test Snackbar',
+							actions: () => (
 								<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
 							)
 						}}
@@ -48,8 +48,8 @@ export default class App extends WidgetBase {
 					<Button onClick={() => (this._showSuccess = true)}>Show Success</Button>
 					<Snackbar type="success" open={this._showSuccess}>
 						{{
-							messageRenderer: () => 'Test Snackbar Success',
-							actionsRenderer: () => (
+							message: () => 'Test Snackbar Success',
+							actions: () => (
 								<Button onClick={() => (this._showSuccess = false)}>X</Button>
 							)
 						}}
@@ -60,8 +60,8 @@ export default class App extends WidgetBase {
 					<Button onClick={() => (this._showError = true)}>Show Error</Button>
 					<Snackbar type="error" open={this._showError}>
 						{{
-							messageRenderer: () => 'Test Snackbar Error',
-							actionsRenderer: () => (
+							message: () => 'Test Snackbar Error',
+							actions: () => (
 								<Button onClick={() => (this._showError = false)}>X</Button>
 							)
 						}}
@@ -72,8 +72,8 @@ export default class App extends WidgetBase {
 					<Button onClick={() => (this._showLeading = true)}>Show Leading</Button>
 					<Snackbar leading={true} open={this._showLeading}>
 						{{
-							messageRenderer: () => 'Test leading snackbar',
-							actionsRenderer: () => (
+							message: () => 'Test leading snackbar',
+							actions: () => (
 								<Button onClick={() => (this._showLeading = false)}>X</Button>
 							)
 						}}
@@ -84,8 +84,8 @@ export default class App extends WidgetBase {
 					<Button onClick={() => (this._showStacked = true)}>Show Stacked</Button>
 					<Snackbar stacked={true} open={this._showStacked}>
 						{{
-							messageRenderer: () => 'Test stacked Snackbar',
-							actionsRenderer: () => (
+							message: () => 'Test stacked Snackbar',
+							actions: () => (
 								<Button onClick={() => (this._showStacked = false)}>Close</Button>
 							)
 						}}
@@ -105,8 +105,8 @@ export default class App extends WidgetBase {
 					</Button>
 					<Snackbar type="success" open={this._showAutoclose}>
 						{{
-							messageRenderer: () => 'Test Snackbar auto close',
-							actionsRenderer: () => [
+							message: () => 'Test Snackbar auto close',
+							actions: () => [
 								<Button onClick={() => clearTimeout(this._timeoutHandle)}>
 									Clear Timeout
 								</Button>,
@@ -122,13 +122,13 @@ export default class App extends WidgetBase {
 					</Button>
 					<Snackbar open={this._showPlain}>
 						{{
-							messageRenderer: () => (
+							message: () => (
 								<div>
 									<Icon type="checkIcon" />
 									Text to display
 								</div>
 							),
-							actionsRenderer: () => (
+							actions: () => (
 								<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
 							)
 						}}
@@ -141,13 +141,13 @@ export default class App extends WidgetBase {
 					</Button>
 					<Snackbar open={this._showPlain}>
 						{{
-							messageRenderer: () => [
+							message: () => [
 								<div>
 									<Icon type="checkIcon" />
 									Text to display
 								</div>
 							],
-							actionsRenderer: () => (
+							actions: () => (
 								<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
 							)
 						}}

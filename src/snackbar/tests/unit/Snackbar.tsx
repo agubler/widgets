@@ -28,14 +28,14 @@ describe('Snackbar', () => {
 
 	it('renders', () => {
 		const h = harness(() => (
-			<Snackbar open={true}>{{ messageRenderer: () => 'test' }}</Snackbar>
+			<Snackbar open={true}>{{ message: () => 'test' }}</Snackbar>
 		));
 		h.expect(template);
 	});
 
 	it('renders non string message', () => {
 		const h = harness(() => (
-			<Snackbar open={true}>{{ messageRenderer: () => <div>test</div> }}</Snackbar>
+			<Snackbar open={true}>{{ message: () => <div>test</div> }}</Snackbar>
 		));
 		const nonStringTemplate = template.setChildren('@label', [<div>test</div>]);
 		h.expect(nonStringTemplate);
@@ -44,7 +44,7 @@ describe('Snackbar', () => {
 	it('renders an array of non string messages', () => {
 		const h = harness(() => (
 			<Snackbar open={true}>
-				{{ messageRenderer: () => [<div>test</div>, <div>test2</div>] }}
+				{{ message: () => [<div>test</div>, <div>test2</div>] }}
 			</Snackbar>
 		));
 		const multipleNonStringTemplate = template.setChildren('@label', [
@@ -56,7 +56,7 @@ describe('Snackbar', () => {
 
 	it('renders closed', () => {
 		const h = harness(() => (
-			<Snackbar open={false}>{{ messageRenderer: () => 'test' }}</Snackbar>
+			<Snackbar open={false}>{{ message: () => 'test' }}</Snackbar>
 		));
 		const openTemplate = template.setProperty('@root', 'classes', [
 			css.root,
@@ -71,7 +71,7 @@ describe('Snackbar', () => {
 	it('renders success', () => {
 		const h = harness(() => (
 			<Snackbar type="success" open={true}>
-				{{ messageRenderer: () => 'test' }}
+				{{ message: () => 'test' }}
 			</Snackbar>
 		));
 		const successTemplate = template.setProperty('@root', 'classes', [
@@ -87,7 +87,7 @@ describe('Snackbar', () => {
 	it('renders leading', () => {
 		const h = harness(() => (
 			<Snackbar leading open={true}>
-				{{ messageRenderer: () => 'test' }}
+				{{ message: () => 'test' }}
 			</Snackbar>
 		));
 		const successTemplate = template.setProperty('@root', 'classes', [
@@ -103,7 +103,7 @@ describe('Snackbar', () => {
 	it('renders stacked', () => {
 		const h = harness(() => (
 			<Snackbar stacked open={true}>
-				{{ messageRenderer: () => 'test' }}
+				{{ message: () => 'test' }}
 			</Snackbar>
 		));
 		const successTemplate = template.setProperty('@root', 'classes', [
@@ -119,7 +119,7 @@ describe('Snackbar', () => {
 	it('renders error', () => {
 		const h = harness(() => (
 			<Snackbar type="error" open={true}>
-				{{ messageRenderer: () => 'test' }}
+				{{ message: () => 'test' }}
 			</Snackbar>
 		));
 		const errorTemplate = template.setProperty('@root', 'classes', [
@@ -135,7 +135,7 @@ describe('Snackbar', () => {
 	it('renders a single action', () => {
 		const h = harness(() => (
 			<Snackbar open>
-				{{ messageRenderer: () => 'test', actionsRenderer: () => <Button>Dismiss</Button> }}
+				{{ message: () => 'test', actions: () => <Button>Dismiss</Button> }}
 			</Snackbar>
 		));
 		const actionsTemplate = template.insertAfter('~label', [
@@ -150,8 +150,8 @@ describe('Snackbar', () => {
 		const h = harness(() => (
 			<Snackbar open={true}>
 				{{
-					messageRenderer: () => 'test',
-					actionsRenderer: () => [<Button>Retry</Button>, <Button>Close</Button>]
+					message: () => 'test',
+					actions: () => [<Button>Retry</Button>, <Button>Close</Button>]
 				}}
 			</Snackbar>
 		));
