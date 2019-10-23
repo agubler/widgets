@@ -34,61 +34,62 @@ export default class App extends WidgetBase {
 				<div id="example-plain">
 					<h3>Snackbar</h3>
 					<Button onClick={() => (this._showPlain = true)}>Show Plain Snackbar</Button>
-					<Snackbar
-						open={this._showPlain}
-						messageRenderer={() => 'Test Snackbar'}
-						actionsRenderer={() => (
-							<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
-						)}
-					/>
+					<Snackbar open={this._showPlain}>
+						{{
+							messageRenderer: () => 'Test Snackbar',
+							actionsRenderer: () => (
+								<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
+							)
+						}}
+					</Snackbar>
 				</div>
 				<div id="example-success">
 					<h3>Success Snackbar</h3>
 					<Button onClick={() => (this._showSuccess = true)}>Show Success</Button>
-					<Snackbar
-						type="success"
-						open={this._showSuccess}
-						messageRenderer={() => 'Test Snackbar Success'}
-						actionsRenderer={() => (
-							<Button onClick={() => (this._showSuccess = false)}>X</Button>
-						)}
-					/>
+					<Snackbar type="success" open={this._showSuccess}>
+						{{
+							messageRenderer: () => 'Test Snackbar Success',
+							actionsRenderer: () => (
+								<Button onClick={() => (this._showSuccess = false)}>X</Button>
+							)
+						}}
+					</Snackbar>
 				</div>
 				<div id="example-error">
 					<h3>Error Snackbar</h3>
 					<Button onClick={() => (this._showError = true)}>Show Error</Button>
-					<Snackbar
-						type="error"
-						open={this._showError}
-						messageRenderer={() => 'Test Snackbar Error'}
-						actionsRenderer={() => (
-							<Button onClick={() => (this._showError = false)}>X</Button>
-						)}
-					/>
+					<Snackbar type="error" open={this._showError}>
+						{{
+							messageRenderer: () => 'Test Snackbar Error',
+							actionsRenderer: () => (
+								<Button onClick={() => (this._showError = false)}>X</Button>
+							)
+						}}
+					</Snackbar>
 				</div>
 				<div id="example-leading">
 					<h3>Leading Snackbar</h3>
 					<Button onClick={() => (this._showLeading = true)}>Show Leading</Button>
-					<Snackbar
-						leading={true}
-						open={this._showLeading}
-						messageRenderer={() => 'Test leading snackbar'}
-						actionsRenderer={() => (
-							<Button onClick={() => (this._showLeading = false)}>X</Button>
-						)}
-					/>
+					<Snackbar leading={true} open={this._showLeading}>
+						{{
+							messageRenderer: () => 'Test leading snackbar',
+							actionsRenderer: () => (
+								<Button onClick={() => (this._showLeading = false)}>X</Button>
+							)
+						}}
+					</Snackbar>
 				</div>
 				<div id="example-stacked">
 					<h3>Stacked Snackbar</h3>
 					<Button onClick={() => (this._showStacked = true)}>Show Stacked</Button>
-					<Snackbar
-						stacked={true}
-						open={this._showStacked}
-						messageRenderer={() => 'Test stacked Snackbar'}
-						actionsRenderer={() => (
-							<Button onClick={() => (this._showStacked = false)}>Close</Button>
-						)}
-					/>
+					<Snackbar stacked={true} open={this._showStacked}>
+						{{
+							messageRenderer: () => 'Test stacked Snackbar',
+							actionsRenderer: () => (
+								<Button onClick={() => (this._showStacked = false)}>Close</Button>
+							)
+						}}
+					</Snackbar>
 				</div>
 				<div id="example-autoclose">
 					<h3>Multiple Actions</h3>
@@ -102,53 +103,55 @@ export default class App extends WidgetBase {
 					>
 						Show Snackbar
 					</Button>
-					<Snackbar
-						type="success"
-						open={this._showAutoclose}
-						messageRenderer={() => 'Test Snackbar auto close'}
-						actionsRenderer={() => [
-							<Button onClick={() => clearTimeout(this._timeoutHandle)}>
-								Clear Timeout
-							</Button>,
-							<Button onClick={() => (this._showAutoclose = false)}>Close</Button>
-						]}
-					/>
+					<Snackbar type="success" open={this._showAutoclose}>
+						{{
+							messageRenderer: () => 'Test Snackbar auto close',
+							actionsRenderer: () => [
+								<Button onClick={() => clearTimeout(this._timeoutHandle)}>
+									Clear Timeout
+								</Button>,
+								<Button onClick={() => (this._showAutoclose = false)}>Close</Button>
+							]
+						}}
+					</Snackbar>
 				</div>
 				<div id="example-non-test-message">
 					<h3>Snackbar</h3>
 					<Button onClick={() => (this._showPlain = true)}>
 						Show Non-Text Message Snackbar
 					</Button>
-					<Snackbar
-						open={this._showPlain}
-						messageRenderer={() => (
-							<div>
-								<Icon type="checkIcon" />
-								Text to display
-							</div>
-						)}
-						actionsRenderer={() => (
-							<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
-						)}
-					/>
+					<Snackbar open={this._showPlain}>
+						{{
+							messageRenderer: () => (
+								<div>
+									<Icon type="checkIcon" />
+									Text to display
+								</div>
+							),
+							actionsRenderer: () => (
+								<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
+							)
+						}}
+					</Snackbar>
 				</div>
 				<div id="example-non-test-array-message">
 					<h3>Snackbar</h3>
 					<Button onClick={() => (this._showPlain = true)}>
 						Show Non-Text Message Array Snackbar
 					</Button>
-					<Snackbar
-						open={this._showPlain}
-						messageRenderer={() => [
-							<div>
-								<Icon type="checkIcon" />
-								Text to display
-							</div>
-						]}
-						actionsRenderer={() => (
-							<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
-						)}
-					/>
+					<Snackbar open={this._showPlain}>
+						{{
+							messageRenderer: () => [
+								<div>
+									<Icon type="checkIcon" />
+									Text to display
+								</div>
+							],
+							actionsRenderer: () => (
+								<Button onClick={() => (this._showPlain = false)}>Dismiss</Button>
+							)
+						}}
+					</Snackbar>
 				</div>
 			</div>
 		);

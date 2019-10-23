@@ -1,16 +1,11 @@
-import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
-import { theme, ThemedMixin } from '@dojo/framework/core/mixins/Themed';
-import { tsx } from '@dojo/framework/core/vdom';
+import { RenderResult } from '@dojo/framework/core/interfaces';
+import theme from '@dojo/framework/core/middleware/theme';
+import { tsx, create } from '@dojo/framework/core/vdom';
 import * as css from '../theme/snackbar.m.css';
 
 export interface SnackbarProperties {
 	/**  */
 	open: boolean;
-	/**  */
-	messageRenderer: () => RenderResult;
-	/**  */
-	actionsRenderer?: () => RenderResult;
 	/**  */
 	type?: 'success' | 'error';
 	/**  */
@@ -19,40 +14,42 @@ export interface SnackbarProperties {
 	stacked?: boolean;
 }
 
-@theme(css)
-export class Snackbar extends ThemedMixin(WidgetBase)<SnackbarProperties> {
-	protected render(): DNode {
-		const { type, open, leading, stacked, messageRenderer, actionsRenderer } = this.properties;
-
-		return (
-			<div
-				key="root"
-				classes={this.theme([
-					css.root,
-					open ? css.open : null,
-					type ? css[type] : null,
-					leading ? css.leading : null,
-					stacked ? css.stacked : null
-				])}
-			>
-				<div key="content" classes={this.theme(css.content)}>
-					<div
-						key="label"
-						classes={this.theme(css.label)}
-						role="status"
-						aria-live="polite"
-					>
-						{messageRenderer()}
-					</div>
-					{actionsRenderer && (
-						<div key="actions" classes={this.theme(css.actions)}>
-							{actionsRenderer()}
-						</div>
-					)}
-				</div>
-			</div>
-		);
-	}
+export interface SnackbarChildren {
+	messageRenderer: () => RenderResult;
+	actionsRenderer?: () => RenderResult;
 }
+
+const factory = create({ theme })
+	.properties<SnackbarProperties>()
+	.children<SnackbarChildren>();
+
+const Snackbar = factory(function Snackbar({ middleware: { theme }, properties, children }) {
+	const { actionsRenderer, messageRenderer } = children()[0];
+	const { type, open, leading, stacked } = properties();
+	const themedCss = theme.classes(css);
+	return (
+		<div
+			key="root"
+			classes={[
+				themedCss.root,
+				open && themedCss.open,
+				type && themedCss[type],
+				leading && themedCss.leading,
+				stacked && themedCss.stacked
+			]}
+		>
+			<div key="content" classes={[themedCss.content]}>
+				<div key="label" classes={[themedCss.label]} role="status" aria-live="polite">
+					{messageRenderer()}
+				</div>
+				{actionsRenderer && (
+					<div key="actions" classes={[themedCss.actions]}>
+						{actionsRenderer()}
+					</div>
+				)}
+			</div>
+		</div>
+	);
+});
 
 export default Snackbar;
