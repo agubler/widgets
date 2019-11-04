@@ -51,7 +51,8 @@ describe('Body', () => {
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				onScroll: noop,
+				resetScroll: false
 			})
 		);
 
@@ -110,7 +111,8 @@ describe('Body', () => {
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				onScroll: noop,
+				resetScroll: false
 			})
 		);
 
@@ -144,7 +146,8 @@ describe('Body', () => {
 				fetcher: noop,
 				updater: noop,
 				pageChange: noop,
-				onScroll: noop
+				onScroll: noop,
+				resetScroll: false
 			})
 		);
 
@@ -206,7 +209,8 @@ describe('Body', () => {
 				fetcher: fetcherStub,
 				updater: noop,
 				pageChange: noop,
-				onScroll: onScrollStub
+				onScroll: onScrollStub,
+				resetScroll: false
 			})
 		);
 
@@ -301,7 +305,8 @@ describe('Body', () => {
 					fetcher: noop,
 					updater: noop,
 					pageChange: pageChangeStub,
-					onScroll: noop
+					onScroll: noop,
+					resetScroll: false
 				})
 			);
 
@@ -335,7 +340,8 @@ describe('Body', () => {
 					fetcher: noop,
 					updater: noop,
 					pageChange: pageChangeStub,
-					onScroll: noop
+					onScroll: noop,
+					resetScroll: false
 				})
 			);
 			// scroll to row 286

@@ -77,7 +77,7 @@ export interface UpdaterCommandPayload {
 	rowNumber: number;
 }
 
-export interface GridPages<S> {
+export interface GridPages<S = any> {
 	[index: string]: S[];
 }
 

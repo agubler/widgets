@@ -14,7 +14,6 @@ import * as css from '../../../theme/grid.m.css';
 import * as fixedCss from '../../styles/grid.m.css';
 import { ColumnConfig } from '../../interfaces';
 import { stub, spy } from 'sinon';
-import { MockMetaMixin } from '../../../common/tests/support/test-helpers';
 import Header from '../../Header';
 import Body from '../../Body';
 import Footer from '../../Footer';
@@ -59,7 +58,7 @@ describe('Grid', () => {
 		const storeSpy = spy(store, 'onChange');
 		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
 		const h = harness(() =>
-			w(MockMetaMixin(Grid, mockMeta), {
+			w(Grid, {
 				fetcher: noop,
 				updater: noop,
 				columnConfig: filterableConfig,
@@ -104,7 +103,8 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: undefined,
+						totalRows: 100,
+						resetScroll: false,
 						pageSize: 100,
 						columnConfig: filterableConfig,
 						pageChange: noop,
@@ -210,6 +210,7 @@ describe('Grid', () => {
 						fetcher: noop,
 						onScroll: noop,
 						height: 300,
+						resetScroll: false,
 						classes: undefined,
 						theme: undefined
 					}),
@@ -233,7 +234,7 @@ describe('Grid', () => {
 		const storeSpy = spy(store, 'onChange');
 		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
 		const h = harness(() =>
-			w(MockMetaMixin(Grid, mockMeta), {
+			w(Grid, {
 				fetcher: noop,
 				updater: noop,
 				columnConfig: filterableConfig,
@@ -279,13 +280,14 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: undefined,
+						totalRows: 0,
 						pageSize: 100,
 						columnConfig: filterableConfig,
 						pageChange: noop,
 						updater: noop,
 						fetcher: noop,
 						onScroll: noop,
+						resetScroll: false,
 						height: 300,
 						classes: undefined,
 						theme: undefined
@@ -309,7 +311,7 @@ describe('Grid', () => {
 
 	it('should render the grid when the dimension are known', () => {
 		const h = harness(() =>
-			w(MockMetaMixin(Grid, mockMeta), {
+			w(Grid, {
 				fetcher: noop,
 				updater: noop,
 				columnConfig,
@@ -353,13 +355,14 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: undefined,
+						totalRows: 0,
 						pageSize: 100,
 						columnConfig,
 						pageChange: noop,
 						updater: noop,
 						fetcher: noop,
 						onScroll: noop,
+						resetScroll: false,
 						height: 50,
 						classes: undefined,
 						theme: undefined
@@ -381,7 +384,7 @@ describe('Grid', () => {
 
 	it('should set the scrollLeft of the header when onScroll is called', () => {
 		const h = harness(() =>
-			w(MockMetaMixin(Grid, mockMeta), {
+			w(Grid, {
 				fetcher: noop,
 				updater: noop,
 				columnConfig,
@@ -425,8 +428,9 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: undefined,
+						totalRows: 0,
 						pageSize: 100,
+						resetScroll: false,
 						columnConfig,
 						pageChange: noop,
 						updater: noop,
@@ -488,7 +492,8 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: undefined,
+						totalRows: 0,
+						resetScroll: false,
 						pageSize: 100,
 						columnConfig,
 						pageChange: noop,
