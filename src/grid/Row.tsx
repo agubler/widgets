@@ -16,13 +16,7 @@ export interface RowProperties {
 const factory = create({ theme }).properties<RowProperties>();
 
 export const Row = factory(function Row({ properties, middleware: { theme: themeMiddleware } }) {
-	const {
-		item,
-		columnConfig,
-		id,
-		// theme, classes,
-		updater
-	} = properties();
+	const { item, columnConfig, id, theme, classes, updater } = properties();
 	const themedCss = themeMiddleware.classes(css);
 
 	return (
@@ -35,8 +29,8 @@ export const Row = factory(function Row({ properties, middleware: { theme: theme
 							? config.renderer(`${item[config.id]}`)
 							: `${item[config.id]}`
 					}
-					// theme={theme}
-					// classes={classes}
+					theme={theme}
+					classes={classes}
 					editable={config.editable}
 					rawValue={item[config.id]}
 					updater={(value: string) => {

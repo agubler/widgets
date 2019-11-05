@@ -113,7 +113,7 @@ const Grid = factory(function Grid({
 			key="root"
 			classes={[themeCss.root, fixedCss.rootFixed]}
 			role="table"
-			aria-rowcount={meta.total && `${meta.total}`}
+			aria-rowcount={meta.total ? `${meta.total}` : null}
 		>
 			<div
 				key="header"
@@ -126,6 +126,7 @@ const Grid = factory(function Grid({
 				row="rowgroup"
 			>
 				<Header
+					key="header-row"
 					theme={theme}
 					classes={classes}
 					columnConfig={columnConfig}
@@ -149,6 +150,7 @@ const Grid = factory(function Grid({
 				/>
 			</div>
 			<Body
+				key="body"
 				theme={theme}
 				classes={classes}
 				pages={pages}
@@ -182,6 +184,7 @@ const Grid = factory(function Grid({
 			/>
 			<div key="footer">
 				<Footer
+					key="footer-row"
 					theme={theme}
 					classes={classes}
 					total={meta.total}

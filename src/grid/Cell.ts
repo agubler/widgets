@@ -1,7 +1,7 @@
 import WidgetBase from '@dojo/framework/core/WidgetBase';
 import { v, w } from '@dojo/framework/core/vdom';
 import { FocusMixin, FocusProperties } from '@dojo/framework/core/mixins/Focus';
-import ThemedMixin, { theme } from '@dojo/framework/core/mixins/Themed';
+import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
 import { DNode } from '@dojo/framework/core/interfaces';
 import { uuid } from '@dojo/framework/core/util';
 import { Keys } from '../common/util';
@@ -12,7 +12,7 @@ import Icon from '../icon/index';
 import * as fixedCss from './styles/cell.m.css';
 import * as css from '../theme/grid-cell.m.css';
 
-export interface CellProperties extends FocusProperties {
+export interface CellProperties extends FocusProperties, ThemedProperties {
 	value: string | DNode;
 	editable?: boolean;
 	rawValue: string;

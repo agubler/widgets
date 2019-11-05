@@ -59,7 +59,7 @@ describe('Header', () => {
 						role: 'columnheader',
 						'aria-sort': null
 					},
-					[v('div', {}, ['Title'])]
+					[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 				),
 				v(
 					'div',
@@ -68,7 +68,7 @@ describe('Header', () => {
 						role: 'columnheader',
 						'aria-sort': null
 					},
-					[v('div', {}, ['First Name'])]
+					[v('div', { classes: undefined, onclick: undefined }, ['First Name'])]
 				)
 			])
 		);
@@ -94,7 +94,7 @@ describe('Header', () => {
 						role: 'columnheader',
 						'aria-sort': null
 					},
-					[v('div', {}, ['Title'])]
+					[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 				),
 				v(
 					'div',
@@ -107,7 +107,7 @@ describe('Header', () => {
 						v(
 							'div',
 							{
-								classes: [css.sortable, null, null, null],
+								classes: [css.sortable, false, false, false],
 								onclick: noop
 							},
 							[
@@ -115,7 +115,7 @@ describe('Header', () => {
 								v(
 									'button',
 									{
-										classes: css.sort,
+										classes: [css.sort],
 										onclick: noop
 									},
 									[
@@ -170,7 +170,7 @@ describe('Header', () => {
 						role: 'columnheader',
 						'aria-sort': null
 					},
-					[v('div', {}, ['Title'])]
+					[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 				),
 				v(
 					'div',
@@ -183,7 +183,7 @@ describe('Header', () => {
 						v(
 							'div',
 							{
-								classes: [css.sortable, css.sorted, null, css.asc],
+								classes: [css.sortable, css.sorted, false, css.asc],
 								onclick: noop
 							},
 							[
@@ -191,7 +191,7 @@ describe('Header', () => {
 								v(
 									'button',
 									{
-										classes: css.sort,
+										classes: [css.sort],
 										onclick: noop
 									},
 									[
@@ -246,7 +246,7 @@ describe('Header', () => {
 						role: 'columnheader',
 						'aria-sort': null
 					},
-					[v('div', {}, ['Title'])]
+					[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 				),
 				v(
 					'div',
@@ -259,7 +259,7 @@ describe('Header', () => {
 						v(
 							'div',
 							{
-								classes: [css.sortable, css.sorted, css.desc, null],
+								classes: [css.sortable, css.sorted, css.desc, false],
 								onclick: noop
 							},
 							[
@@ -267,7 +267,7 @@ describe('Header', () => {
 								v(
 									'button',
 									{
-										classes: css.sort,
+										classes: [css.sort],
 										onclick: noop
 									},
 									[
@@ -321,7 +321,7 @@ describe('Header', () => {
 						role: 'columnheader',
 						'aria-sort': null
 					},
-					[v('div', {}, ['Title'])]
+					[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 				),
 				v(
 					'div',
@@ -334,7 +334,7 @@ describe('Header', () => {
 						v(
 							'div',
 							{
-								classes: [css.sortable, null, null, null],
+								classes: [css.sortable, false, false, false],
 								onclick: noop
 							},
 							[
@@ -342,7 +342,7 @@ describe('Header', () => {
 								v(
 									'button',
 									{
-										classes: css.sort,
+										classes: [css.sort],
 										onclick: noop
 									},
 									[
@@ -485,7 +485,7 @@ describe('Header', () => {
 							role: 'columnheader',
 							'aria-sort': null
 						},
-						[v('div', {}, ['Title'])]
+						[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 					),
 					v(
 						'div',
@@ -498,7 +498,7 @@ describe('Header', () => {
 							v(
 								'div',
 								{
-									classes: [css.sortable, css.sorted, null, css.asc],
+									classes: [css.sortable, css.sorted, false, css.asc],
 									onclick: noop
 								},
 								[
@@ -556,7 +556,7 @@ describe('Header', () => {
 							role: 'columnheader',
 							'aria-sort': null
 						},
-						[v('div', {}, ['Title'])]
+						[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 					),
 					v(
 						'div',
@@ -569,7 +569,7 @@ describe('Header', () => {
 							v(
 								'div',
 								{
-									classes: [css.sortable, css.sorted, css.desc, null],
+									classes: [css.sortable, css.sorted, css.desc, false],
 									onclick: noop
 								},
 								[
@@ -627,7 +627,7 @@ describe('Header', () => {
 							role: 'columnheader',
 							'aria-sort': null
 						},
-						[v('div', {}, ['Title'])]
+						[v('div', { classes: undefined, onclick: undefined }, ['Title'])]
 					),
 					v(
 						'div',
@@ -640,7 +640,7 @@ describe('Header', () => {
 							v(
 								'div',
 								{
-									classes: [css.sortable, null, null, null],
+									classes: [css.sortable, false, false, false],
 									onclick: noop
 								},
 								[
@@ -648,7 +648,7 @@ describe('Header', () => {
 									v(
 										'button',
 										{
-											classes: css.sort,
+											classes: [css.sort],
 											onclick: noop
 										},
 										[

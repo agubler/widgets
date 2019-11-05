@@ -12,7 +12,7 @@ import * as fixedCss from './styles/body.m.css';
 import * as css from '../theme/grid-body.m.css';
 
 export interface BodyProperties {
-	totalRows: number;
+	totalRows?: number;
 	pageSize: number;
 	pages: GridPages;
 	height: number;
@@ -134,23 +134,33 @@ export const Body = factory(function Body({
 
 	const topPaddingHeight = rowHeight * start;
 	let bottomPaddingHeight = 0;
-	if (totalRows >= pageSize) {
-		bottomPaddingHeight = totalRows * rowHeight - topPaddingHeight - (end - start) * rowHeight;
+	if (!totalRows || totalRows >= pageSize) {
+		bottomPaddingHeight =
+			(totalRows || 0) * rowHeight - topPaddingHeight - (end - start) * rowHeight;
 	}
 	const rootProperties = {
+		key: 'root',
 		onscroll: ({ target }: UIEvent<HTMLElement>) => {
-			const { totalRows, onScroll } = properties();
+			const { totalRows = 0, onScroll } = properties();
 			const scrollTop = target.scrollTop;
 			const scrollLeft = target.scrollLeft;
 			const topRow = Math.round(scrollTop / rowHeight);
 			const bottomRow = topRow + rowsInView;
+			let start = icache.getOrSet('start', 0);
+			let end = icache.getOrSet('end', 100);
 			if (topRow <= start) {
-				icache.set('start', Math.max(0, topRow - renderPageSize));
-				icache.set('end', Math.min(totalRows, start + renderPageSize * 2));
+				start = Math.max(0, topRow - renderPageSize);
+				end = Math.min(totalRows, start + renderPageSize * 2);
 			}
 			if (bottomRow >= end) {
-				icache.set('start', Math.min(topRow, totalRows - renderPageSize));
-				icache.set('end', Math.min(totalRows, start + renderPageSize * 2));
+				start = Math.min(topRow, totalRows - renderPageSize);
+				end = Math.min(totalRows, start + renderPageSize * 2);
+			}
+			if (icache.get('start') !== start) {
+				icache.set('start', start);
+			}
+			if (icache.get('end') !== end) {
+				icache.set('end', end);
 			}
 			onScroll(scrollLeft);
 		},

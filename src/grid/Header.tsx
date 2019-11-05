@@ -57,7 +57,7 @@ export const Header = factory(function Header({
 			{columnConfig.map((config) => {
 				const { filterable, sortable, id } = config;
 				const title = typeof config.title === 'string' ? config.title : config.title();
-				const isSorted = sort && sort.columnId === config.id;
+				const isSorted = Boolean(sort && sort.columnId === config.id);
 				const isSortedAsc = Boolean(
 					sort && sort.columnId === config.id && sort.direction === 'asc'
 				);
@@ -83,7 +83,7 @@ export const Header = factory(function Header({
 
 				return (
 					<div
-						aria-sort={isSorted && isSortedAsc ? 'ascending' : 'descending'}
+						aria-sort={isSorted ? (isSortedAsc ? 'ascending' : 'descending') : null}
 						classes={[themedCss.cell, fixedCss.cellFixed]}
 						role="columnheader"
 					>
@@ -92,8 +92,8 @@ export const Header = factory(function Header({
 								sortable && [
 									themedCss.sortable,
 									isSorted && themedCss.sorted,
-									isSortedAsc && themedCss.asc,
-									isSortedDesc && themedCss.desc
+									isSortedDesc && themedCss.desc,
+									isSortedAsc && themedCss.asc
 								]
 							}
 							onclick={sortable ? doSort : undefined}
@@ -103,7 +103,7 @@ export const Header = factory(function Header({
 								(sortRenderer ? (
 									sortRenderer(config, direction, doSort)
 								) : (
-									<button classes={[themedCss.sort]}>
+									<button classes={[themedCss.sort]} onclick={doSort}>
 										<Icon
 											theme={theme}
 											classes={classes}
@@ -118,6 +118,7 @@ export const Header = factory(function Header({
 								filterRenderer(config, filterValue, doFilter, title)
 							) : (
 								<TextInput
+									key="filter"
 									theme={theme}
 									classes={classes}
 									extraClasses={{ root: css.filter }}

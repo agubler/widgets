@@ -2,9 +2,8 @@ const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/core/vdom';
-import Dimensions from '@dojo/framework/core/meta/Dimensions';
-import Resize from '@dojo/framework/core/meta/Resize';
+import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
+import { v, w, node } from '@dojo/framework/core/vdom';
 import { Store } from '@dojo/framework/stores/Store';
 import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
@@ -25,27 +24,30 @@ const columnConfig: ColumnConfig[] = [];
 let mockDimensionsGet = stub();
 mockDimensionsGet.withArgs('header').returns({ size: { height: 150 } });
 mockDimensionsGet.withArgs('footer').returns({ size: { height: 50 } });
-const metaDimensionsReturn = {
-	get: mockDimensionsGet,
-	has: () => false
-};
-const metaResizeReturn = {
-	get: () => {}
-};
-const mockMeta = stub();
-mockMeta.withArgs(Dimensions).returns(metaDimensionsReturn);
-mockMeta.withArgs(Resize).returns(metaResizeReturn);
+const mockNode = createNodeMock();
+mockNode('header', {
+	getBoundingClientRect: () => {
+		return { height: 150 };
+	}
+});
+mockNode('footer', {
+	getBoundingClientRect: () => {
+		return { height: 50 };
+	}
+});
 
 describe('Grid', () => {
 	it('should render only the container when no dimensions', () => {
-		const h = harness(() =>
-			w(Grid, {
-				fetcher: noop,
-				updater: noop,
-				columnConfig,
-				storeId: 'id',
-				height: 0
-			})
+		const h = harness(
+			() =>
+				w(Grid, {
+					fetcher: noop,
+					updater: noop,
+					columnConfig,
+					storeId: 'id',
+					height: 0
+				}),
+			{ middleware: [[node, mockNode]] }
 		);
 
 		h.expect(() =>
@@ -57,14 +59,16 @@ describe('Grid', () => {
 		const store = new Store();
 		const storeSpy = spy(store, 'onChange');
 		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
-		const h = harness(() =>
-			w(Grid, {
-				fetcher: noop,
-				updater: noop,
-				columnConfig: filterableConfig,
-				store,
-				height: 500
-			})
+		const h = harness(
+			() =>
+				w(Grid, {
+					fetcher: noop,
+					updater: noop,
+					columnConfig: filterableConfig,
+					store,
+					height: 500
+				}),
+			{ middleware: [[node, mockNode]] }
 		);
 
 		h.expect(() =>
@@ -103,7 +107,7 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: 100,
+						totalRows: undefined,
 						resetScroll: false,
 						pageSize: 100,
 						columnConfig: filterableConfig,
@@ -233,15 +237,17 @@ describe('Grid', () => {
 		const store = new Store();
 		const storeSpy = spy(store, 'onChange');
 		const filterableConfig = [{ id: 'id', title: 'id', filterable: true }];
-		const h = harness(() =>
-			w(Grid, {
-				fetcher: noop,
-				updater: noop,
-				columnConfig: filterableConfig,
-				store,
-				storeId: 'test-id',
-				height: 500
-			})
+		const h = harness(
+			() =>
+				w(Grid, {
+					fetcher: noop,
+					updater: noop,
+					columnConfig: filterableConfig,
+					store,
+					storeId: 'test-id',
+					height: 500
+				}),
+			{ middleware: [[node, mockNode]] }
 		);
 
 		h.expect(() =>
@@ -280,7 +286,7 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: 0,
+						totalRows: undefined,
 						pageSize: 100,
 						columnConfig: filterableConfig,
 						pageChange: noop,
@@ -310,13 +316,15 @@ describe('Grid', () => {
 	});
 
 	it('should render the grid when the dimension are known', () => {
-		const h = harness(() =>
-			w(Grid, {
-				fetcher: noop,
-				updater: noop,
-				columnConfig,
-				height: 250
-			})
+		const h = harness(
+			() =>
+				w(Grid, {
+					fetcher: noop,
+					updater: noop,
+					columnConfig,
+					height: 250
+				}),
+			{ middleware: [[node, mockNode]] }
 		);
 
 		h.expect(() =>
@@ -334,7 +342,7 @@ describe('Grid', () => {
 						{
 							key: 'header',
 							scrollLeft: 0,
-							classes: [css.header, fixedCss.headerFixed, null],
+							classes: [css.header, fixedCss.headerFixed, false],
 							row: 'rowgroup'
 						},
 						[
@@ -355,7 +363,7 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: 0,
+						totalRows: undefined,
 						pageSize: 100,
 						columnConfig,
 						pageChange: noop,
@@ -383,13 +391,15 @@ describe('Grid', () => {
 	});
 
 	it('should set the scrollLeft of the header when onScroll is called', () => {
-		const h = harness(() =>
-			w(Grid, {
-				fetcher: noop,
-				updater: noop,
-				columnConfig,
-				height: 500
-			})
+		const h = harness(
+			() =>
+				w(Grid, {
+					fetcher: noop,
+					updater: noop,
+					columnConfig,
+					height: 500
+				}),
+			{ middleware: [[node, mockNode]] }
 		);
 
 		h.expect(() =>
@@ -407,7 +417,7 @@ describe('Grid', () => {
 						{
 							key: 'header',
 							scrollLeft: 0,
-							classes: [css.header, fixedCss.headerFixed, null],
+							classes: [css.header, fixedCss.headerFixed, false],
 							row: 'rowgroup'
 						},
 						[
@@ -428,7 +438,7 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: 0,
+						totalRows: undefined,
 						pageSize: 100,
 						resetScroll: false,
 						columnConfig,
@@ -471,7 +481,7 @@ describe('Grid', () => {
 						{
 							key: 'header',
 							scrollLeft: 10,
-							classes: [css.header, fixedCss.headerFixed, null],
+							classes: [css.header, fixedCss.headerFixed, false],
 							row: 'rowgroup'
 						},
 						[
@@ -492,7 +502,7 @@ describe('Grid', () => {
 					w(Body, {
 						key: 'body',
 						pages: {},
-						totalRows: 0,
+						totalRows: undefined,
 						resetScroll: false,
 						pageSize: 100,
 						columnConfig,

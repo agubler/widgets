@@ -17,8 +17,9 @@ export const Footer = factory(function Footer({ properties, middleware: { theme 
 
 	return (
 		<div classes={[themedCss.root]}>
-			{total !== undefined &&
-				`Page ${page} of ${Math.ceil(total / pageSize)}. Total rows ${total}`}
+			{total !== undefined
+				? `Page ${page} of ${Math.ceil(total / pageSize)}. Total rows ${total}`
+				: 'Page 1 of ?'}
 		</div>
 	);
 });

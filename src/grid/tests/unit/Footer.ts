@@ -14,7 +14,7 @@ describe('Footer', () => {
 				pageSize: 100
 			})
 		);
-		h.expect(() => v('div', { classes: css.root }, ['Page 1 of ?']));
+		h.expect(() => v('div', { classes: [css.root] }, ['Page 1 of ?']));
 	});
 
 	it('should render footer with total', () => {
@@ -25,6 +25,6 @@ describe('Footer', () => {
 				pageSize: 100
 			})
 		);
-		h.expect(() => v('div', { classes: css.root }, ['Page 1 of 100. Total rows 9998']));
+		h.expect(() => v('div', { classes: [css.root] }, ['Page 1 of 100. Total rows 9998']));
 	});
 });
