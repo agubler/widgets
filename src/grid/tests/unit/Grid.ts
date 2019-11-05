@@ -66,7 +66,8 @@ describe('Grid', () => {
 					updater: noop,
 					columnConfig: filterableConfig,
 					store,
-					height: 500
+					height: 500,
+					storeId: '_grid'
 				}),
 			{ middleware: [[node, mockNode]] }
 		);

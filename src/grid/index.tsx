@@ -1,4 +1,4 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
+import { create, tsx, invalidator } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import resize from '@dojo/framework/core/middleware/resize';
@@ -36,13 +36,14 @@ export interface CustomRenderers {
 	filterRenderer?: FilterRenderer;
 }
 
+const store = createStoreMiddleware<GridState>();
+
 interface State {
 	scrollLeft: number;
 	resetScroll: boolean;
+	gridStore: Store<GridState> | ReturnType<typeof store>['api'];
 }
-
 const icache = createICacheMiddleware<State>();
-const store = createStoreMiddleware<GridState>();
 
 export interface GridProperties {
 	/** The full configuration for the grid columns */
@@ -61,7 +62,14 @@ export interface GridProperties {
 	customRenderers?: CustomRenderers;
 }
 
-const factory = create({ theme, icache, store, dimensions, resize }).properties<GridProperties>();
+const factory = create({
+	theme,
+	icache,
+	store,
+	dimensions,
+	resize,
+	invalidator
+}).properties<GridProperties>();
 
 function isStoreInstance(store: any): store is Store<GridState> {
 	return store instanceof Store;
@@ -72,7 +80,14 @@ const PAGE_SIZE = 100;
 const Grid = factory(function Grid({
 	id,
 	properties,
-	middleware: { theme: themeMiddleware, icache, store: storeMiddleware, dimensions, resize }
+	middleware: {
+		theme: themeMiddleware,
+		icache,
+		store: storeMiddleware,
+		dimensions,
+		resize,
+		invalidator
+	}
 }) {
 	const {
 		columnConfig,
@@ -99,6 +114,10 @@ const Grid = factory(function Grid({
 	const footerHeight = dimensions.get('footer');
 	const bodyHeight = height - headerHeight.size.height - footerHeight.size.height;
 	const resetScroll = icache.getOrSet('resetScroll', false);
+	if (icache.get('gridStore') !== gridStore && isStoreInstance(gridStore)) {
+		gridStore.onChange(gridStore.path(storeId), invalidator);
+	}
+	icache.set('gridStore', gridStore);
 	if (resetScroll) {
 		icache.set('resetScroll', false);
 	}
