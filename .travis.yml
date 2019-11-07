@@ -9,7 +9,6 @@ script:
 - npm run test
 - npm run build:docs
 - ./deploy.sh
-- ./comment-deployments.sh
 - npm run uploadCoverage
 notifications:
   slack:
