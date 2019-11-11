@@ -63,6 +63,7 @@ const preSortCommand = commandFactory<SortCommandPayload>(
 		const page = get(path(id, 'meta', 'page'));
 		return [
 			remove(path(id, 'data', 'pages')),
+			remove(path(id, 'meta', 'selection')),
 			replace(path(id, 'meta', 'fetchedPages'), page === 1 ? [1] : [page, page - 1]),
 			replace(path(id, 'meta', 'sort', 'columnId'), columnId),
 			replace(path(id, 'meta', 'sort', 'direction'), direction),
@@ -75,6 +76,7 @@ const preFilterCommand = commandFactory<FilterCommandPayload>(
 	({ at, path, get, payload: { id, filterOptions } }) => {
 		return [
 			remove(path(id, 'data', 'pages')),
+			remove(path(id, 'meta', 'selection')),
 			replace(path(id, 'meta', 'fetchedPages'), [1]),
 			replace(path(id, 'meta', 'filter', filterOptions.columnId), filterOptions.value),
 			replace(path(id, 'meta', 'currentFilter'), filterOptions),
@@ -196,6 +198,45 @@ const updaterCommand = commandFactory<UpdaterCommandPayload>(
 	}
 );
 
+export type SelectionType = 'single' | 'multi-row' | 'multi';
+
+const selectionCommand = commandFactory<{ id: string; index: number; type: SelectionType }>(
+	({ payload: { id, index, type }, get, path }) => {
+		let currentSelection = [...(get(path(id, 'meta', 'selection')) || [])];
+		switch (type) {
+			case 'single': {
+				currentSelection = [index];
+				break;
+			}
+			case 'multi-row': {
+				if (currentSelection.length) {
+					currentSelection.sort();
+					const minimumIndex = currentSelection[0];
+					if (index < minimumIndex) {
+						currentSelection = [];
+						for (let i = index; i <= minimumIndex; i++) {
+							currentSelection.push(i);
+						}
+					} else if (index > minimumIndex) {
+						currentSelection = [];
+						for (let i = minimumIndex; i <= index; i++) {
+							currentSelection.push(i);
+						}
+					}
+				} else {
+					currentSelection = [index];
+				}
+				break;
+			}
+			case 'multi': {
+				break;
+			}
+		}
+
+		return [replace(path(id, 'meta', 'selection'), currentSelection)];
+	}
+);
+
 export const updaterProcess: Process<GridState, UpdaterCommandPayload> = createProcess(
 	'grid-update',
 	[preUpdateCommand, updaterCommand]
@@ -211,6 +252,9 @@ export const filterProcess: Process<GridState, FilterCommandPayload> = createPro
 export const sortProcess: Process<GridState, SortCommandPayload> = createProcess('grid-sort', [
 	preSortCommand,
 	sortCommand
+]);
+export const selectionProcess: Process<GridState, any> = createProcess('grid-selection', [
+	selectionCommand
 ]);
 export const pageChangeProcess: Process<GridState, PageChangeCommandPayload> = createProcess(
 	'grid-page-change',

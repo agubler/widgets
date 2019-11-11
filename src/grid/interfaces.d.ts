@@ -34,6 +34,11 @@ export interface Updater<S = any> {
 	(item: S): void;
 }
 
+export interface GridSelectionProperties<S = any> {
+	multi?: boolean;
+	onRowSelect: (rowData: S[]) => void;
+}
+
 export interface ColumnConfig {
 	id: string;
 	title: string | (() => DNode);
@@ -98,6 +103,7 @@ export interface GridMeta<S> {
 	currentFilter: FilterOptions;
 	isSorting: boolean;
 	editedRow: GridEditedRow<S>;
+	selection: number[];
 	fetchedPages: number[];
 }
 

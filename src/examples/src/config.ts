@@ -13,6 +13,7 @@ import Sorting from './widgets/grid/Sorting';
 import EditableCells from './widgets/grid/EditableCells';
 import CustomSortRenderer from './widgets/grid/CustomSortRenderer';
 import RestfulGrid from './widgets/grid/Restful';
+import SelectionGrid from './widgets/grid/Selection';
 import BasicIcons from './widgets/icon/Basic';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicLabel from './widgets/label/Basic';
@@ -185,6 +186,12 @@ export const config: Config = {
 				description: 'Demonstrates using the grid utilities to support editable cells',
 				module: EditableCells,
 				filename: 'EditableCells'
+			},
+			{
+				title: 'Grid Row Selection',
+				description: 'Demonstrates using the grid with row selection',
+				module: SelectionGrid,
+				filename: 'Selection'
 			}
 		]
 	},

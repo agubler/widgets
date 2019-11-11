@@ -25,6 +25,8 @@ export interface BodyProperties<S> {
 	updater: (page: number, rowNumber: number, columnId: string, value: string) => void;
 	pageChange: (page: number) => void;
 	onScroll: (value: number) => void;
+	onRowSelect?: (index: number, type: any) => void;
+	selectedIndexes?: number[];
 }
 
 const offscreen = (dnode: DNode) => {
@@ -102,7 +104,9 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 			pageChange,
 			totalRows,
 			theme,
-			classes
+			classes,
+			onRowSelect,
+			selectedIndexes = []
 		} = this.properties;
 
 		const startPage = Math.max(Math.ceil(start / pageSize), 1);
@@ -140,6 +144,10 @@ export default class Body<S> extends ThemedMixin(WidgetBase)<BodyProperties<S>> 
 						classes,
 						item,
 						columnConfig,
+						onRowSelect: (type: any) => {
+							onRowSelect && onRowSelect(i, type);
+						},
+						selected: selectedIndexes.indexOf(i) !== -1,
 						updater: this._updater
 					})
 				);

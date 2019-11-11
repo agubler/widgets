@@ -13,12 +13,22 @@ export interface RowProperties {
 	item: { [index: string]: any };
 	columnConfig: ColumnConfig[];
 	updater: (rowNumber: number, columnId: string, value: any) => void;
+	onRowSelect?: (type: any) => void;
+	selected?: boolean;
 }
 
 @theme(css)
 export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 	protected render(): DNode {
-		const { item, columnConfig, id, theme, classes } = this.properties;
+		const {
+			item,
+			columnConfig,
+			id,
+			theme,
+			classes,
+			onRowSelect,
+			selected = false
+		} = this.properties;
 		let columns = columnConfig.map(
 			(config) => {
 				let value: string | DNode = `${item[config.id]}`;
@@ -43,7 +53,22 @@ export default class Row extends ThemedMixin(WidgetBase)<RowProperties> {
 		return v(
 			'div',
 			{
-				classes: [this.theme(css.root), fixedCss.rootFixed],
+				onclick: onRowSelect
+					? (event: MouseEvent) => {
+							const type =
+								event.ctrlKey || event.metaKey
+									? 'multi'
+									: event.shiftKey
+									? 'multi-row'
+									: 'single';
+							onRowSelect(type);
+					  }
+					: undefined,
+				classes: [
+					this.theme(css.root),
+					selected && this.theme(css.selected),
+					fixedCss.rootFixed
+				],
 				role: 'row',
 				'aria-rowindex': `${id + 1}`
 			},
