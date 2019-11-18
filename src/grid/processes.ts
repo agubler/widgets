@@ -9,6 +9,7 @@ import {
 	FilterCommandPayload,
 	UpdaterCommandPayload
 } from './interfaces';
+import { findIndex } from '@dojo/framework/shim/array';
 
 const commandFactory = createCommandFactory<GridState>();
 
@@ -229,6 +230,12 @@ const selectionCommand = commandFactory<{ id: string; index: number; type: Selec
 				break;
 			}
 			case 'multi': {
+				const existingIndex = findIndex(currentSelection, (idx) => idx === index);
+				if (existingIndex === -1) {
+					currentSelection = [...currentSelection, index];
+				} else {
+					currentSelection.splice(existingIndex, 1);
+				}
 				break;
 			}
 		}

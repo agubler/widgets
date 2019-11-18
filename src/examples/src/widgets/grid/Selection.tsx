@@ -1,6 +1,7 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 
 import Grid from '@dojo/widgets/grid';
+import icache from '@dojo/framework/core/middleware/icache';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 import { createData } from './data';
 
@@ -20,19 +21,30 @@ const columnConfig = [
 ];
 
 const fetcher = createFetcher(createData());
-const factory = create();
+const factory = create({ icache });
 
-export default factory(function Selection() {
+export default factory(function Selection({ middleware: { icache } }) {
+	const selected = icache.get<any[]>('selected');
 	return (
-		<Grid
-			selection={{
-				onRowSelect: (item) => {
-					console.log(item);
-				}
-			}}
-			fetcher={fetcher}
-			columnConfig={columnConfig}
-			height={500}
-		/>
+		<virtual>
+			<Grid
+				selection={{
+					onRowSelect: (items) => {
+						icache.set('selected', items);
+					},
+					multi: true
+				}}
+				fetcher={fetcher}
+				columnConfig={columnConfig}
+				height={300}
+			/>
+			{selected && (
+				<div>
+					{selected.map((item) => (
+						<pre key={item.id}>{JSON.stringify(item)}</pre>
+					))}
+				</div>
+			)}
+		</virtual>
 	);
 });
