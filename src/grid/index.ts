@@ -55,7 +55,7 @@ export interface GridProperties<S> extends ThemedProperties {
 	storeId?: string;
 	/** set of custom renderers for sorting or filtering */
 	customRenderers?: CustomRenderers;
-
+	/** selection configuration for the grid */
 	selection?: GridSelectionProperties<S>;
 }
 
