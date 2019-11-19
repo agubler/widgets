@@ -7,7 +7,8 @@ import {
 	PageChangeCommandPayload,
 	SortCommandPayload,
 	FilterCommandPayload,
-	UpdaterCommandPayload
+	UpdaterCommandPayload,
+	SelectionCommandPayload
 } from './interfaces';
 import { findIndex } from '@dojo/framework/shim/array';
 
@@ -199,9 +200,7 @@ const updaterCommand = commandFactory<UpdaterCommandPayload>(
 	}
 );
 
-export type SelectionType = 'single' | 'multi-row' | 'multi';
-
-const selectionCommand = commandFactory<{ id: string; index: number; type: SelectionType }>(
+const selectionCommand = commandFactory<SelectionCommandPayload>(
 	({ payload: { id, index, type }, get, path }) => {
 		let currentSelection = [...(get(path(id, 'meta', 'selection')) || [])];
 		switch (type) {
@@ -244,6 +243,10 @@ const selectionCommand = commandFactory<{ id: string; index: number; type: Selec
 	}
 );
 
+const clearSelectionCommand = commandFactory<{ id: string }>(({ payload: { id }, path }) => {
+	return [remove(path(id, 'meta', 'selection'))];
+});
+
 export const updaterProcess: Process<GridState, UpdaterCommandPayload> = createProcess(
 	'grid-update',
 	[preUpdateCommand, updaterCommand]
@@ -260,9 +263,11 @@ export const sortProcess: Process<GridState, SortCommandPayload> = createProcess
 	preSortCommand,
 	sortCommand
 ]);
-export const selectionProcess: Process<GridState, any> = createProcess('grid-selection', [
-	selectionCommand
-]);
+export const selectionProcess: Process<GridState, SelectionCommandPayload> = createProcess(
+	'grid-selection',
+	[selectionCommand]
+);
+export const clearSelectionProcess = createProcess('clear-selection', [clearSelectionCommand]);
 export const pageChangeProcess: Process<GridState, PageChangeCommandPayload> = createProcess(
 	'grid-page-change',
 	[pageChangeCommand]

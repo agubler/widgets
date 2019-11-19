@@ -60,6 +60,14 @@ export interface FetcherCommandPayload {
 	id: string;
 }
 
+export type SelectionType = 'single' | 'multi-row' | 'multi';
+
+export interface SelectionCommandPayload {
+	id: string;
+	index: number;
+	type: SelectionType;
+}
+
 export interface SortCommandPayload {
 	id: string;
 	fetcher: Fetcher;
