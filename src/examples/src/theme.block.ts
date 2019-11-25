@@ -26,7 +26,9 @@ export default function(config: { [index: string]: string }): ThemeInterface {
 				const match = moduleSpecifierValue.match(/.*\/theme\/(.*\.m\.css)$/);
 				if (match) {
 					const cssFilename = match[1];
-					const root = postcss.parse(fs.readFileSync(`./src/theme/${cssFilename}`));
+					const root = postcss.parse(
+						fs.readFileSync(`./src/theme/default/${cssFilename}`)
+					);
 					root.walk((node) => {
 						if (node.type === 'comment') {
 							comment = node.text;

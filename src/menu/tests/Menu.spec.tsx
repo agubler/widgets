@@ -9,7 +9,7 @@ import {
 	comparePrefixTheme
 } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
-import * as css from '../../theme/menu.m.css';
+import * as css from '../../theme/default/menu.m.css';
 import MenuItem from '../MenuItem';
 import ListBoxItem from '../ListBoxItem';
 const { assert } = intern.getPlugin('chai');

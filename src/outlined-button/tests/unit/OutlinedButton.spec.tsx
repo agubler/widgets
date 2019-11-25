@@ -6,7 +6,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness';
 
 import OutlinedButton from '../../index';
-import * as css from '../../../theme/outlined-button.m.css';
+import * as css from '../../../theme/default/outlined-button.m.css';
 import Button, { ButtonProperties } from '../../../button/index';
 
 const baseAssertion = assertionTemplate(() => (
