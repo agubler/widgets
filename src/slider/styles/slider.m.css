@@ -27,7 +27,9 @@
 
 /* Make native input invisible */
 .nativeInput {
-	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
 	background: transparent;
 	border: 0 none;
 	color: transparent;
@@ -44,7 +46,9 @@
 
 /* invisible native track */
 .nativeInput::-ms-track {
-	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
 	background: transparent;
 	border: 0 none;
 	color: transparent;
@@ -55,7 +59,9 @@
 	width: 100%;
 }
 .nativeInput::-moz-range-track {
-	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
 	background: transparent;
 	border: 0 none;
 	color: transparent;
@@ -84,7 +90,9 @@
 	cursor: pointer;
 }
 .nativeInput::-webkit-slider-thumb {
-	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
 	border-radius: 50%;
 	border: 0 none;
 	background: transparent;

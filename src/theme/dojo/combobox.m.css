@@ -25,7 +25,9 @@
 }
 
 .trigger {
-	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
 	background-color: transparent;
 	border-radius: 0;
 	border: var(--border-width) solid transparent;

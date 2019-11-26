@@ -1,4 +1,4 @@
-@import '../common/styles/variables.css';
+@import './variables.css';
 
 .root {}
 
@@ -50,7 +50,9 @@
 
 /* native input styles */
 .input {
-	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
 	background: var(--component-background);
 	border: 1px solid var(--component-color);
 	border-radius: 0;

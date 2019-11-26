@@ -4,6 +4,7 @@ import Router from '@dojo/framework/routing/Router';
 import has from '@dojo/framework/core/has';
 import TabController from '@dojo/widgets/tab-controller';
 import Tab from '@dojo/widgets/tab';
+import dojo from '@dojo/widgets/theme/dojo';
 
 import * as css from './Example.m.css';
 
@@ -28,13 +29,13 @@ export default factory(function Example({ children, properties, middleware: { in
 	}
 	const activeTab = tabNames.indexOf(active) === -1 ? 0 : tabNames.indexOf(active);
 	const tabs = [
-		<Tab key="example" label="Example">
+		<Tab theme={dojo} key="example" label="Example">
 			<div classes={css.tab}>{children()}</div>
 		</Tab>
 	];
 	if (content) {
 		tabs.push(
-			<Tab key="code" label="Code">
+			<Tab theme={dojo} key="code" label="Code">
 				<div classes={css.tab}>
 					<pre classes={['language-ts']}>
 						<code classes={['language-ts']} innerHTML={content} />
@@ -45,7 +46,7 @@ export default factory(function Example({ children, properties, middleware: { in
 	}
 	if (!has('docs')) {
 		tabs.push(
-			<Tab key="tests" label="Tests">
+			<Tab theme={dojo} key="tests" label="Tests">
 				<div classes={css.tab}>
 					{activeTab === tabNames.indexOf('tests') && (
 						<iframe
@@ -59,6 +60,7 @@ export default factory(function Example({ children, properties, middleware: { in
 	}
 	return (
 		<TabController
+			theme={dojo}
 			activeIndex={activeTab}
 			onRequestTabChange={(index) => {
 				if (router) {

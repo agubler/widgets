@@ -1,6 +1,10 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import block from '@dojo/framework/core/middleware/block';
+import theme from '@dojo/framework/core/middleware/theme';
+import icache from '@dojo/framework/core/middleware/icache';
 import Outlet from '@dojo/framework/routing/Outlet';
+import dojo from '@dojo/widgets/theme/dojo';
+import material from '@dojo/widgets/theme/material';
 
 import readme from './readme.block';
 import getWidgetProperties, { PropertyInterface } from './properties.block';
@@ -15,6 +19,7 @@ import PropertyTable from './PropertyTable';
 
 import * as css from './App.m.css';
 import Landing from './Landing';
+import Select from '@dojo/widgets/select';
 
 const widgetFilenames = getWidgetFileNames(configs);
 
@@ -29,13 +34,16 @@ interface AppProperties {
 	includeDocs: boolean;
 }
 
-const factory = create({ block }).properties<AppProperties>();
+const factory = create({ block, theme, icache }).properties<AppProperties>();
 
 interface Content {
 	[index: string]: string;
 }
 
-export default factory(function App({ properties, middleware: { block } }) {
+export default factory(function App({ properties, middleware: { block, theme, icache } }) {
+	if (!theme.get()) {
+		theme.set(dojo);
+	}
 	const { includeDocs } = properties();
 	const widgets = Object.keys(configs).sort();
 	let widgetReadmeContent: Content = {};
@@ -80,6 +88,31 @@ export default factory(function App({ properties, middleware: { block } }) {
 								<SideMenu name={widgetName} config={widgetConfig} />
 								<div classes={[css.content]}>
 									{isBasic && includeDocs && <div innerHTML={readmeContent} />}
+									<div
+										styles={{
+											right: '24px',
+											bottom: '24px',
+											position: 'absolute',
+											width: '200px'
+										}}
+									>
+										<Select
+											theme={dojo}
+											value={icache.getOrSet('theme', 'dojo')}
+											options={['dojo', 'material', 'default']}
+											useNativeElement={true}
+											onValue={(value) => {
+												if (value === 'dojo') {
+													theme.set(dojo);
+												} else if (value === 'material') {
+													theme.set(material);
+												} else {
+													theme.set({});
+												}
+												icache.set('theme', value);
+											}}
+										/>
+									</div>
 									<h1>{isBasic ? 'Basic Usage' : example.title}</h1>
 									<Example
 										widgetName={widgetName}
