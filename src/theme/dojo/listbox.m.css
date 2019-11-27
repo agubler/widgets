@@ -42,6 +42,11 @@
 	position: relative;
 }
 
+.other {
+	composes: checkIcon from './icon.m.css';
+	background: red;
+}
+
 .selectedOption::before {
 	font-family: 'dojo2BaseTheme';
 	position: absolute;

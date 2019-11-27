@@ -28,6 +28,7 @@
     "test:watch": "dojo test --watch",
     "test:ci": "run-s clean build:test test:headless",
     "build:ce": "dojo build widget && shx cp -r output/dist dist/umd/src/",
+    "build:theme": "dojo bulid theme",
     "build:docs": "dojo build app -f docs=true",
     "build:examples": "dojo build app -f docs=true && dojo build app -m dev",
     "build:docs:dev": "dojo build app -m dev -w -s -f docs=true",
@@ -51,17 +52,18 @@
     "@dojo/cli": "7.0.0-alpha.1",
     "@dojo/cli-build-app": "7.0.0-alpha.4",
     "@dojo/cli-build-widget": "7.0.0-alpha.2",
+    "@dojo/cli-build-theme": "./dojo-cli-build-theme-0.0.2.tgz",
     "@dojo/cli-test-intern": "7.0.0-alpha.3",
     "@dojo/framework": "7.0.0-alpha.4",
     "@dojo/loader": "^2.0.0",
     "@dojo/scripts": "^4.0.2",
     "@dojo/themes": "^6.0.0",
-    "@theintern/a11y": "~0.2.0",
     "@material/button": "2.1.1",
-    "@material/chips": "4.0.0",
     "@material/checkbox": "4.0.0",
+    "@material/chips": "4.0.0",
     "@material/radio": "3.2.0",
     "@material/tab": "4.0.0",
+    "@theintern/a11y": "~0.2.0",
     "@types/execa": "^0.8.1",
     "@types/glob": "5.0.36",
     "@types/grunt": "0.4.*",
@@ -81,6 +83,8 @@
     "npm-run-all": "4.1.5",
     "pkg-dir": "^2.0.0",
     "postcss": "^7.0.21",
+    "postcss-css-variables": "^0.14.0",
+    "postcss-custom-properties": "^9.0.2",
     "prettier": "1.17.0",
     "prismjs": "1.17.1",
     "rehype-stringify": "6.0.0",
@@ -94,7 +98,12 @@
     "unified": "8.4.1"
   },
   "dependencies": {
-    "tslib": "~1.9.1"
+    "css-modules-loader-core": "^1.1.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "postcss-modules": "^1.4.1",
+    "postcss-preset-env": "^6.7.0",
+    "tslib": "~1.9.1",
+    "webpack-cli": "^3.3.10"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

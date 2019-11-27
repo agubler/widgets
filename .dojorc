@@ -50,6 +50,9 @@
 			]
 		}
 	},
+	"build-theme": {
+		"themes": ["dojo", "material"]
+	},
 	"build-widget": {
 		"prefix": "dojo",
 		"widgets": [

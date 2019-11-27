@@ -3,8 +3,8 @@ import block from '@dojo/framework/core/middleware/block';
 import theme from '@dojo/framework/core/middleware/theme';
 import icache from '@dojo/framework/core/middleware/icache';
 import Outlet from '@dojo/framework/routing/Outlet';
-import dojo from '@dojo/widgets/theme/dojo';
-import material from '@dojo/widgets/theme/material';
+import dojo from 'theme/dojo';
+import material from 'theme/material';
 
 import readme from './readme.block';
 import getWidgetProperties, { PropertyInterface } from './properties.block';

@@ -4,6 +4,8 @@ import renderer, { tsx } from '@dojo/framework/core/vdom';
 import Registry from '@dojo/framework/core/Registry';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 
+// import '@dojo/themes/material/index.css';
+
 `!has('docs')`;
 import './tests';
 
