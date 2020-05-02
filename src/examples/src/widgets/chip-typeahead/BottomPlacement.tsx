@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
+
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import states from '@dojo/widgets/examples/src/widgets/list/states';
 import Example from '../../Example';
@@ -12,11 +12,7 @@ const resource = createResource(createMemoryTemplate({ filter: defaultFilter }))
 export default factory(function Bottom() {
 	return (
 		<Example>
-			<ChipTypeahead
-				resource={resource(states)}
-				transform={defaultTransform}
-				placement="bottom"
-			>
+			<ChipTypeahead resource={resource({ data: states })} placement="bottom">
 				{{
 					label: 'Select Applicable States'
 				}}

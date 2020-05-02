@@ -93,7 +93,6 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 	const {
 		initialValue = [],
 		resource,
-		transform,
 		disabled,
 		itemsInView,
 		position,
@@ -213,7 +212,6 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 
 					focus.focus();
 				}}
-				transform={transform}
 				value=""
 				onFocus={() => icache.set('focused', true)}
 				onBlur={() => icache.set('focused', false)}

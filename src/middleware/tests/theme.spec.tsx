@@ -45,7 +45,8 @@ let themeMiddleware = callback({
 let composesInstance = theme().callback({
 	id: 'theme',
 	middleware: {
-		coreTheme: themeMiddleware
+		coreTheme: themeMiddleware,
+		injector
 	},
 	properties: () => properties,
 	children: () => []
@@ -59,7 +60,8 @@ describe('theme middleware', () => {
 		composesInstance = theme().callback({
 			id: 'theme',
 			middleware: {
-				coreTheme: themeMiddleware
+				coreTheme: themeMiddleware,
+				injector
 			},
 			properties: () => properties,
 			children: () => []

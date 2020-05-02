@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
+
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import { ListItem } from '@dojo/widgets/list';
 import Example from '../../Example';
@@ -17,7 +17,7 @@ const resource = createResource(createMemoryTemplate({ filter: defaultFilter }))
 export default factory(function CustomRenderer() {
 	return (
 		<Example>
-			<ChipTypeahead resource={resource(options)} transform={defaultTransform}>
+			<ChipTypeahead resource={resource({ data: options })}>
 				{{
 					label: 'Favorite Foods',
 					items: (item, props) => (

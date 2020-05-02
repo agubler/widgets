@@ -101,7 +101,6 @@ export const Typeahead = factory(function Typeahead({
 		name,
 		helperText,
 		itemsInView,
-		transform,
 		onValidate,
 		strict = true,
 		value: controlledValue
@@ -352,7 +351,6 @@ export const Typeahead = factory(function Typeahead({
 									focusable={false}
 									activeIndex={icache.get('activeIndex')}
 									resource={sharedResource}
-									transform={transform}
 									disabled={itemDisabled}
 									onValue={(value) => {
 										focus.focus();

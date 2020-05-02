@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
+
 import icache from '@dojo/framework/core/middleware/icache';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Icon from '@dojo/widgets/icon';
@@ -19,8 +19,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 	return (
 		<Example>
 			<ChipTypeahead
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ data: options })}
 				value={icache.getOrSet('value', [])}
 				onValue={(value) => icache.set('value', value)}
 			>

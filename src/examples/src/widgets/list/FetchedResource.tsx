@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
-import { createResource, createTransformer, DataTemplate } from '@dojo/framework/core/resource';
+import { createResource, DataTemplate } from '@dojo/framework/core/resource';
 import Example from '../../Example';
 
 const fetcher = async (options: any) => {
@@ -36,11 +36,6 @@ const template: DataTemplate<{ firstName: string; lastName: string }> = {
 	read: fetcher
 };
 
-const transformer = createTransformer(template, {
-	value: ['firstName'],
-	label: ['firstName', 'lastName']
-});
-
 const resource = createResource(template);
 
 const factory = create({ icache });
@@ -49,8 +44,7 @@ export default factory(function FetchedResource({ middleware: { icache } }) {
 	return (
 		<Example>
 			<List
-				resource={resource}
-				transform={transformer}
+				resource={resource({ transform: { value: 'firstName', label: 'firstName' } })}
 				onValue={(value: string) => {
 					icache.set('value', value);
 				}}

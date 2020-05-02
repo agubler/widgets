@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import { padStart } from '@dojo/framework/shim/string';
-import { List, ListOption, defaultTransform as listTransform } from '../list';
+import { List, ListOption } from '../list';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/time-picker.m.css';
 import * as inputCss from '../theme/default/text-input.m.css';
@@ -82,6 +82,7 @@ export interface TimePickerICache {
 	inputValidMessage?: string;
 	isValid?: boolean;
 	initialValue?: string;
+	resource: any;
 }
 
 const factory = create({
@@ -353,11 +354,12 @@ export const TimePicker = factory(function TimePicker({
 
 		return options;
 	};
+	const resource = icache.getOrSet('resource', () => {
+		return createResource(memoryTemplate)({ data: generateOptions() });
+	});
 
 	const { name } = properties();
 	const [{ label } = {} as TimePickerChildren] = children();
-
-	const options = generateOptions();
 
 	return (
 		<div classes={[theme.variant(), classes.root]}>
@@ -447,8 +449,7 @@ export const TimePicker = factory(function TimePicker({
 								<List
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
-									resource={createResource(memoryTemplate)(options)}
-									transform={listTransform}
+									resource={resource}
 									onValue={(value: string) => {
 										if (controlledValue === undefined) {
 											icache.set('inputValue', value);

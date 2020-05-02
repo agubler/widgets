@@ -4,7 +4,7 @@ import { createHarness, compareTheme } from '../../common/tests/support/test-hel
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import { stub } from 'sinon';
 import List, { ListOption } from '../../list';
-import ContextMenu, { defaultTransform } from '../';
+import ContextMenu from '../';
 import ContextPopup from '../../context-popup';
 import { createResource } from '@dojo/framework/core/resource';
 const { describe, it, after, afterEach } = intern.getInterface('bdd');
@@ -38,7 +38,7 @@ describe('ContextMenu', () => {
 
 	it('renders', () => {
 		const h = harness(() => (
-			<ContextMenu resource={resource(options)} transform={defaultTransform} onSelect={noop}>
+			<ContextMenu resource={resource({ data: options })} onSelect={noop}>
 				{children}
 			</ContextMenu>
 		));
@@ -48,7 +48,7 @@ describe('ContextMenu', () => {
 
 	it('passes children as `trigger`', () => {
 		const h = harness(() => (
-			<ContextMenu resource={resource(options)} transform={defaultTransform} onSelect={noop}>
+			<ContextMenu resource={resource({ data: options })} onSelect={noop}>
 				{children}
 			</ContextMenu>
 		));
@@ -65,11 +65,7 @@ describe('ContextMenu', () => {
 		const onSelect = stub();
 		const shouldFocus = stub();
 		const h = harness(() => (
-			<ContextMenu
-				resource={resource(options)}
-				transform={defaultTransform}
-				onSelect={onSelect}
-			>
+			<ContextMenu resource={resource({ data: options })} onSelect={onSelect}>
 				{children}
 			</ContextMenu>
 		));
@@ -82,8 +78,7 @@ describe('ContextMenu', () => {
 					menu
 					focus={() => null as any}
 					theme={{}}
-					resource={resource(options)}
-					transform={defaultTransform}
+					resource={resource({ data: options })}
 					onBlur={() => {}}
 					onRequestClose={() => {}}
 					onValue={() => {}}

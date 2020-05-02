@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform } from '@dojo/widgets/list';
+import List, { ListOption } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 import { createResource } from '@dojo/framework/core/resource';
@@ -13,14 +13,13 @@ const options = [
 	{ value: 'Edit' }
 ];
 
-const resource = createResource();
+const resource = createResource<ListOption>();
 
 export default factory(function Dividers({ middleware: { icache } }) {
 	return (
 		<Example>
 			<List
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ data: options })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

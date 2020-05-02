@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Select, { defaultTransform } from '@dojo/widgets/select';
+import Select from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createResource } from '@dojo/framework/core/resource';
 import Example from '../../Example';
@@ -14,8 +14,7 @@ export default factory(function RequiredSelect({ middleware: { icache } }) {
 	return (
 		<Example>
 			<Select
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ data: options })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

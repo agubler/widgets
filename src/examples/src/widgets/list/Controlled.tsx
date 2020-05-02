@@ -1,12 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform } from '@dojo/widgets/list';
+import List, { ListOption } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import states from './states';
 import Example from '../../Example';
 import { createResource } from '@dojo/framework/core/resource';
 
 const factory = create({ icache });
-const resource = createResource();
+const resource = createResource<ListOption>();
 
 export default factory(function Controlled({ middleware: { icache } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
@@ -48,8 +48,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				<List
 					focusable={false}
 					itemsInView={4}
-					resource={resource(states)}
-					transform={defaultTransform}
+					resource={resource({ data: states })}
 					onActiveIndexChange={(index: number) => {
 						icache.set('activeIndex', index);
 					}}

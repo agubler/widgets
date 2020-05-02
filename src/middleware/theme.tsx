@@ -1,11 +1,16 @@
 import { create } from '@dojo/framework/core/vdom';
 import coreTheme, {
-	ThemeProperties as CoreThemeProperties
+	ThemeProperties as CoreThemeProperties,
+	INJECTED_THEME_KEY
 } from '@dojo/framework/core/middleware/theme';
+import injector from '@dojo/framework/core/middleware/injector';
 import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
 import { ThemeWithVariant } from '@dojo/framework/core/interfaces';
+import ThemeInjector, {
+	isThemeInjectorPayloadWithVariant
+} from '@dojo/framework/core/ThemeInjector';
 
-const factory = create({ coreTheme });
+const factory = create({ coreTheme, injector });
 export const THEME_KEY = ' _key';
 
 function uppercaseFirstChar(value: string) {
@@ -22,14 +27,30 @@ function isThemeWithVariant(theme: any): theme is ThemeWithVariant {
 
 export interface ThemeProperties extends CoreThemeProperties {}
 
-export const theme = factory(function({ middleware: { coreTheme }, properties }) {
+export const theme = factory(function({ middleware: { coreTheme, injector }, properties }) {
+	function getTheme() {
+		const { theme } = properties();
+		if (theme) {
+			return theme;
+		}
+		const themeInjector = injector.get<ThemeInjector>(INJECTED_THEME_KEY);
+		if (themeInjector) {
+			const themePayload = themeInjector.get();
+			if (isThemeInjectorPayloadWithVariant(themePayload)) {
+				return { theme: themePayload.theme, variant: themePayload.variant };
+			} else if (themePayload) {
+				return themePayload.theme;
+			}
+		}
+	}
+
 	return {
 		compose: <T extends ClassNames, B extends ClassNames>(
 			baseCss: B,
 			css: T,
 			prefix?: string
 		): Theme | ThemeWithVariant => {
-			const theme = properties().theme;
+			const theme = getTheme();
 			const baseKey = baseCss[THEME_KEY];
 			const variantKey = css[THEME_KEY];
 			const virtualCss = Object.keys(baseCss).reduce(

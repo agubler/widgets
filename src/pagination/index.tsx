@@ -5,14 +5,15 @@ import theme from '@dojo/framework/core/middleware/theme';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import resize from '@dojo/framework/core/middleware/resize';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { createResource, DataTemplate } from '@dojo/framework/core/resource';
+import { createResource, Resource } from '@dojo/framework/core/resource';
 import global from '@dojo/framework/shim/global';
 
 import Icon from '../icon';
-import Select, { defaultTransform } from '../select';
+import Select from '../select';
 
 import bundle from './Pagination.nls';
 import * as css from '../theme/default/pagination.m.css';
+import { ListOption } from '../list';
 
 export interface PaginationProperties {
 	/** The initial page number */
@@ -51,17 +52,8 @@ interface PaginationCache {
 	siblingWidth: number;
 	pageSize: number;
 	pageSizes: number[];
+	resource: Resource<ListOption>;
 }
-
-const template: DataTemplate = {
-	read: (_, put, get) => {
-		let data: any[] = get();
-		put(0, data);
-		return { data, total: data.length };
-	}
-};
-
-const pageSizesResource = createResource(template);
 
 function getRenderedWidth(dnode: RenderResult, wrapperClass?: string): number {
 	if (dnode === undefined) {
@@ -95,6 +87,7 @@ export default factory(function Pagination({
 		}
 	});
 	resize.get('root');
+	const resource = icache.getOrSet('resource', () => createResource<ListOption>());
 
 	const {
 		initialPage,
@@ -284,18 +277,16 @@ export default factory(function Pagination({
 								pageSize === undefined ? currentPageSize.toString() : undefined
 							}
 							value={pageSize === undefined ? undefined : pageSize.toString()}
-							resource={pageSizesResource(
-								pageSizes.map((ps) => ({ value: ps.toString() }))
-							)}
-							transform={defaultTransform}
+							resource={resource({
+								data: pageSizes.map((pageSize) => ({
+									value: pageSize.toString(),
+									label: `${pageSize}`
+								}))
+							})}
 							onValue={(value) => {
 								onPageSize && onPageSize(parseInt(value, 10));
 							}}
-						>
-							{{
-								items: (itemProps) => itemProps.value
-							}}
-						</Select>
+						/>
 					</div>
 				)}
 			</div>

@@ -1,5 +1,4 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import Typeahead from '@dojo/widgets/typeahead';
 import Example from '../../Example';
@@ -18,8 +17,7 @@ export default factory(function Validation({ middleware: { icache } }) {
 	return (
 		<Example>
 			<Typeahead
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ data: options })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

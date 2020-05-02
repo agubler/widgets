@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform, ListOption } from '@dojo/widgets/list';
+import List, { ListOption } from '@dojo/widgets/list';
 import Button from '@dojo/widgets/button';
 import TriggerPopup from '@dojo/widgets/trigger-popup';
 import Example from '../../Example';
@@ -21,11 +21,7 @@ export default factory(function MenuTriggerPopup() {
 					trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Menu Popup</Button>,
 					content: (onClose) => (
 						<div styles={{ border: '1px solid black' }}>
-							<List
-								resource={resource(options)}
-								transform={defaultTransform}
-								onValue={onClose}
-							/>
+							<List resource={resource({ data: options })} onValue={onClose} />
 						</div>
 					)
 				}}

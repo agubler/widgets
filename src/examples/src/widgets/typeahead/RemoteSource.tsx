@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Typeahead from '@dojo/widgets/typeahead';
-import { createResource, createTransformer, DataTemplate } from '@dojo/framework/core/resource';
+import { createResource, DataTemplate } from '@dojo/framework/core/resource';
 import Example from '../../Example';
 
 const fetcher = async (options: any) => {
@@ -13,9 +13,7 @@ const fetcher = async (options: any) => {
 
 	if (query) {
 		query.forEach(({ keys, value }: { keys: string[]; value: string }) => {
-			keys.forEach((key) => {
-				url = `${url}&${key}=${value}`;
-			});
+			url = `${url}&${keys}=${value}`;
 		});
 	}
 
@@ -35,12 +33,6 @@ const fetcher = async (options: any) => {
 const template: DataTemplate<{ firstName: string; lastName: string }> = {
 	read: fetcher
 };
-
-const transformer = createTransformer(template, {
-	value: ['lastName'],
-	label: ['firstName', 'lastName']
-});
-
 const resource = createResource(template);
 
 const factory = create({ icache });
@@ -50,8 +42,7 @@ export default factory(function Remote({ middleware: { icache } }) {
 		<Example>
 			<Typeahead
 				helperText="Type to filter by last name"
-				resource={resource}
-				transform={transformer}
+				resource={resource({ transform: { value: 'lastName', label: 'lastName' } })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

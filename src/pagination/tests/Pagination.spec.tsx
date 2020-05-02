@@ -13,13 +13,16 @@ import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate
 import { stubEvent } from '../../common/tests/support/test-helpers';
 
 import Icon from '../../icon';
-import Select, { defaultTransform } from '../../select';
+import Select from '../../select';
 
 import Pagination from '..';
 import * as css from '../../theme/default/pagination.m.css';
 import bundle from '../Pagination.nls';
+import { createResource } from '@dojo/framework/core/resource';
 
 const { messages } = bundle;
+
+const testResource = createResource<any>();
 
 describe('Pagination', () => {
 	const noop = () => {};
@@ -268,16 +271,12 @@ describe('Pagination', () => {
 				<Select
 					key="page-size-select"
 					initialValue="20"
-					resource={{
-						resource: noop as any,
-						data: [{ value: '10' }, { value: '20' }]
-					}}
-					transform={defaultTransform}
+					resource={testResource({
+						data: [{ value: '10', label: '10' }, { value: '20', label: '20' }]
+					})}
 					onValue={noop}
 					value={undefined}
-				>
-					{noop as any}
-				</Select>
+				/>
 			</div>
 		]);
 		const pageSizes = [10, 20];

@@ -13,7 +13,6 @@ import {
 	ItemRendererProperties,
 	List,
 	ListOption,
-	defaultTransform as listTransform,
 	ListItemProperties,
 	MenuItemProperties
 } from '../list';
@@ -63,8 +62,6 @@ export interface SelectChildren {
 	label?: RenderResult;
 }
 
-export const defaultTransform = listTransform;
-
 interface SelectICache {
 	dirty: boolean;
 	expanded: boolean;
@@ -99,8 +96,7 @@ export const Select = factory(function Select({
 		position,
 		required,
 		name,
-		resource,
-		transform
+		resource
 	} = properties();
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
 
@@ -254,7 +250,6 @@ export const Select = factory(function Select({
 									key="menu"
 									focus={() => focusNode === 'menu' && shouldFocus}
 									resource={resource}
-									transform={transform}
 									onValue={(value: string) => {
 										focus.focus();
 										closeMenu();

@@ -1,4 +1,4 @@
-import { List, ListOption, defaultTransform as listTransform } from '../../../list';
+import { List, ListOption } from '../../../list';
 import * as sinon from 'sinon';
 
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -120,8 +120,7 @@ const menuTemplate = assertionTemplate(() => {
 			<List
 				key="menu"
 				focus={() => false}
-				resource={resource(options30Minutes)}
-				transform={listTransform}
+				resource={resource({ data: options30Minutes })}
 				onValue={noop}
 				onRequestClose={noop}
 				onBlur={noop}
@@ -410,13 +409,13 @@ describe('TimePicker', () => {
 			menuTemplate.setProperty(
 				'@menu',
 				'resource',
-				resource(
-					generateOptions(60 * 30, {
+				resource({
+					data: generateOptions(60 * 30, {
 						hour12: false,
 						hour: 'numeric',
 						minute: 'numeric'
 					})
-				)
+				})
 			),
 			() => contentResult
 		);

@@ -1,20 +1,20 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Select, { defaultTransform } from '@dojo/widgets/select';
+import Select from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 import { createResource } from '@dojo/framework/core/resource';
+import { ListOption } from '@dojo/widgets/list';
 
 const factory = create({ icache });
 const options = [{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }];
 
-const resource = createResource();
+const resource = createResource<ListOption>();
 
 export default factory(function AdditionalText({ middleware: { icache } }) {
 	return (
 		<Example>
 			<Select
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ data: options })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

@@ -5,7 +5,7 @@ import HelperText from '../../../helper-text';
 import { tsx } from '@dojo/framework/core/vdom';
 import { compareTheme, createHarness } from '../../../common/tests/support/test-helpers';
 import Typeahead from '../../../typeahead';
-import List, { defaultTransform, ListOption } from '../../../list';
+import List, { ListOption } from '../../../list';
 import { createResource, createMemoryTemplate } from '@dojo/framework/core/resource';
 import { stub } from 'sinon';
 import TextInput from '../../../text-input';
@@ -26,12 +26,7 @@ const animalOptions: ListOption[] = [
 	{ value: 'fish', disabled: true }
 ];
 
-const memoryTemplate = createMemoryTemplate();
-
-const resource = {
-	resource: createResource(memoryTemplate),
-	data: animalOptions
-};
+const resource = createResource<ListOption>(createMemoryTemplate());
 
 const baseAssertion = assertionTemplate(() => (
 	<div key="root" classes={[undefined, themedCss.root, undefined, false, false]}>
@@ -82,8 +77,12 @@ const listTemplate = assertionTemplate(() => (
 			focusable={false}
 			activeIndex={undefined}
 			disabled={undefined}
-			resource={{ resource: resource.resource, createOptionsWrapper: noop }}
-			transform={defaultTransform}
+			resource={{
+				resource: noop as any,
+				transform: undefined as any,
+				createOptionsWrapper: noop,
+				type: 'WRAPPER' as const
+			}}
 			onValue={noop}
 			onRequestClose={noop}
 			onBlur={noop}
@@ -101,7 +100,7 @@ registerSuite('Typeahead', {
 	tests: {
 		'renders a typeahead'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -111,7 +110,7 @@ registerSuite('Typeahead', {
 
 		'renders the typeahead trigger'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -129,7 +128,7 @@ registerSuite('Typeahead', {
 
 		'renders the typeahead content'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -147,7 +146,7 @@ registerSuite('Typeahead', {
 
 		'opens the typeahead on input value'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -167,12 +166,7 @@ registerSuite('Typeahead', {
 
 		'shows an option label when the value is entered'() {
 			const h = harness(() => (
-				<Typeahead
-					initialValue="cat"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				>
+				<Typeahead initialValue="cat" resource={resource()} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -184,12 +178,7 @@ registerSuite('Typeahead', {
 
 		'shows an option value when the value is entered and there is no label'() {
 			const h = harness(() => (
-				<Typeahead
-					initialValue="dog"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				>
+				<Typeahead initialValue="dog" resource={resource()} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -201,7 +190,7 @@ registerSuite('Typeahead', {
 
 		'opens the typeahead on input click'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -221,7 +210,7 @@ registerSuite('Typeahead', {
 
 		'opens the typeahead on down press'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -243,7 +232,7 @@ registerSuite('Typeahead', {
 		},
 		'opens the typeahead on up press'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -265,7 +254,7 @@ registerSuite('Typeahead', {
 		},
 		'controls the list with keyboard events'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -298,7 +287,7 @@ registerSuite('Typeahead', {
 		},
 		'wraps list items when gets to the top'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -331,7 +320,7 @@ registerSuite('Typeahead', {
 		},
 		'wraps list items when gets to the bottom'() {
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={noop}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -369,7 +358,7 @@ registerSuite('Typeahead', {
 			const onValue = stub();
 
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={onValue}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={onValue}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -394,9 +383,8 @@ registerSuite('Typeahead', {
 
 			const h = harness(() => (
 				<Typeahead
-					resource={createResource()(animalOptions)}
+					resource={createResource<ListOption>()({ data: animalOptions })}
 					strict={false}
-					transform={defaultTransform}
 					onValue={onValue}
 				>
 					{{ label: 'Test' }}
@@ -425,8 +413,7 @@ registerSuite('Typeahead', {
 
 			const h = harness(() => (
 				<Typeahead
-					resource={createResource()(animalOptions)}
-					transform={defaultTransform}
+					resource={createResource<ListOption>()({ data: animalOptions })}
 					onValue={onValue}
 				>
 					{{ label: 'Test' }}
@@ -457,8 +444,7 @@ registerSuite('Typeahead', {
 			const h = harness(() => (
 				<Typeahead
 					strict={false}
-					resource={resource}
-					transform={defaultTransform}
+					resource={resource()}
 					onValue={onValue}
 					onValidate={onValidate}
 				>
@@ -501,8 +487,7 @@ registerSuite('Typeahead', {
 				<Typeahead
 					strict={false}
 					required
-					resource={resource}
-					transform={defaultTransform}
+					resource={resource()}
 					onValue={onValue}
 					onValidate={onValidate}
 				>
@@ -528,7 +513,7 @@ registerSuite('Typeahead', {
 			const onValue = stub();
 
 			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={onValue}>
+				<Typeahead resource={resource({ data: animalOptions })} onValue={onValue}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -555,12 +540,7 @@ registerSuite('Typeahead', {
 			};
 
 			const h = harness(() => (
-				<Typeahead
-					resource={resource}
-					transform={defaultTransform}
-					onValue={stub}
-					{...properties}
-				>
+				<Typeahead resource={resource()} onValue={stub} {...properties}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));
@@ -595,13 +575,7 @@ registerSuite('Typeahead', {
 			const onBlur = stub();
 
 			const h = harness(() => (
-				<Typeahead
-					resource={resource}
-					transform={defaultTransform}
-					onFocus={onFocus}
-					onBlur={onBlur}
-					onValue={stub()}
-				>
+				<Typeahead resource={resource()} onFocus={onFocus} onBlur={onBlur} onValue={stub()}>
 					{{ label: 'Test' }}
 				</Typeahead>
 			));

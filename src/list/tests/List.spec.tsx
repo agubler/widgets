@@ -2,7 +2,7 @@ import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import List, { ListOption, defaultTransform, MenuItem, ListItem } from '..';
+import List, { ListOption, MenuItem, ListItem } from '..';
 import { compareId, createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
 import * as css from '../../theme/default/list.m.css';
@@ -94,19 +94,14 @@ describe('List', () => {
 
 	it('renders options', () => {
 		const h = harness(() => (
-			<List resource={resource(animalOptions)} transform={defaultTransform} onValue={noop} />
+			<List resource={resource({ data: animalOptions })} onValue={noop} />
 		));
 		h.expect(template);
 	});
 
 	it('renders with an initialValue', () => {
 		const h = harness(() => (
-			<List
-				initialValue="dog"
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
+			<List initialValue="dog" onValue={noop} resource={resource({ data: animalOptions })} />
 		));
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
@@ -134,7 +129,7 @@ describe('List', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform}>
+			<List onValue={noop} resource={resource({ data: animalOptions })}>
 				{({ label, value }, props) => (
 					<ListItem {...props}>
 						<span>label is {label || value}</span>
@@ -163,12 +158,7 @@ describe('List', () => {
 
 	it('takes a number in view property', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				itemsInView={2}
-			/>
+			<List onValue={noop} resource={resource({ data: animalOptions })} itemsInView={2} />
 		));
 		const numberInViewTemplate = template.setProperty('@root', 'styles', {
 			maxHeight: '90px'
@@ -178,7 +168,7 @@ describe('List', () => {
 
 	it('changes active item on arrow key down', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
+			<List onValue={noop} resource={resource({ data: animalOptions })} />
 		));
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
@@ -201,8 +191,7 @@ describe('List', () => {
 					currentActiveValue = value;
 				}}
 				value="dog"
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={resource({ data: animalOptions })}
 			/>
 		));
 		const mockArrowDownEvent = {
@@ -231,7 +220,7 @@ describe('List', () => {
 
 	it('changes active item on arrow key up and loops to last item', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
+			<List onValue={noop} resource={resource({ data: animalOptions })} />
 		));
 		const mockArrowUpEvent = {
 			stopPropagation: sb.stub(),
@@ -251,8 +240,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={resource({ data: animalOptions })}
 				onActiveIndexChange={onActiveIndexChange}
 			/>
 		));
@@ -269,7 +257,7 @@ describe('List', () => {
 
 	it('sets active item to be the one starting with letter key pressed', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
+			<List onValue={noop} resource={resource({ data: animalOptions })} />
 		));
 		const mockCPressEvent = {
 			stopPropagation: sb.stub(),
@@ -287,11 +275,7 @@ describe('List', () => {
 	it('selects item on key press', () => {
 		const onValue = sb.stub();
 		const h = harness(() => (
-			<List
-				onValue={onValue}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
+			<List onValue={onValue} resource={resource({ data: animalOptions })} />
 		));
 
 		const mockArrowDownEvent = {
@@ -322,8 +306,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={resource({ data: animalOptions })}
 				disabled={(item) => item.value === 'cat'}
 			>
 				{}
@@ -423,12 +406,7 @@ describe('List - Menu', () => {
 
 	it('renders options', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				menu
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
+			<List onValue={noop} menu resource={resource({ data: animalOptions })} />
 		));
 		h.expect(template);
 	});
@@ -438,11 +416,9 @@ describe('List - Menu', () => {
 			<List
 				onValue={noop}
 				menu
-				resource={resource([
-					{ ...animalOptions[0], divider: true },
-					...animalOptions.slice(1)
-				])}
-				transform={defaultTransform}
+				resource={resource({
+					data: [{ ...animalOptions[0], divider: true }, ...animalOptions.slice(1)]
+				})}
 			/>
 		));
 
@@ -451,12 +427,7 @@ describe('List - Menu', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				menu
-			>
+			<List onValue={noop} resource={resource({ data: animalOptions })} menu>
 				{({ label, value }, props) => (
 					<MenuItem {...props}>
 						<span>label is {label || value}</span>

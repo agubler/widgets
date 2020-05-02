@@ -12,17 +12,13 @@ const animals = [
 	{ name: 'mickey', type: 'rodent' }
 ];
 
-const resource = createResource();
+const resource = createResource<{ name: string; type: string }>();
 
 export default factory(function CustomTransformer({ middleware: { icache } }) {
 	return (
 		<Example>
 			<List
-				resource={resource(animals)}
-				transform={{
-					value: ['type'],
-					label: ['name']
-				}}
+				resource={resource({ data: animals, transform: { value: 'type', label: 'name' } })}
 				onValue={(value: string) => {
 					icache.set('value', value);
 				}}
