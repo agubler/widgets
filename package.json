@@ -60,7 +60,7 @@
     "@dojo/cli-build-theme": "7.0.0-rc.1",
     "@dojo/cli-build-widget": "7.0.0-rc.1",
     "@dojo/cli-test-intern": "7.0.0-rc.1",
-    "@dojo/framework": "7.0.0-rc.3",
+    "@dojo/framework": "next",
     "@dojo/parade": "1.0.0-rc.3",
     "@dojo/scripts": "^4.0.3",
     "@material/button": "3.0.0",
@@ -106,6 +106,8 @@
     "typescript": "~3.4.5"
   },
   "dependencies": {
+    "@types/faker": "^4.1.11",
+    "faker": "^4.1.0",
     "tslib": "~1.9.1"
   },
   "lint-staged": {

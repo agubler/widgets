@@ -1,19 +1,16 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform, ListItem } from '@dojo/widgets/list';
-import states from './states';
+import List, { ListItem } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
-import { createResource } from '@dojo/framework/core/resource';
+import { asyncTemplate, exampleData } from '../templates';
 
 const factory = create({ icache });
-const resource = createResource();
 
 export default factory(function ItemRenderer({ middleware: { icache } }) {
 	return (
 		<Example>
 			<List
-				resource={resource(states)}
-				transform={defaultTransform}
+				resource={asyncTemplate({ data: exampleData })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
