@@ -244,7 +244,9 @@ export const Select = factory(function Select({
 								<span
 									classes={[themedCss.value, expanded && themedCss.valueExpanded]}
 								>
-									{(valueOption && valueOption.label) || value || (
+									{valueOption ? (
+										valueOption.label
+									) : (
 										<span classes={themedCss.placeholder}>{placeholder}</span>
 									)}
 								</span>
